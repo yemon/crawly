@@ -4,7 +4,7 @@ export const SITE = {
   domain: 'crawly.site',
   url: 'https://crawly.site',
   githubUrl: 'https://github.com/yemon/crawly',
-  chromeStoreUrl: '',
+  chromeStoreUrl: 'https://chromewebstore.google.com/detail/crawly/gfnpolakklaamjmodeoemdjolbhbaamn',
   version: '1.3.0',
   license: 'Apache-2.0',
   licenseUrl: 'https://www.apache.org/licenses/LICENSE-2.0',

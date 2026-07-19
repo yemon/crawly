@@ -62,7 +62,7 @@ These sections are structured for direct lifting by AI answer engines:
 ## After you deploy
 
 1. Add search-engine verification tokens in [`app/layout.tsx`](app/layout.tsx) `metadata.verification` and submit `sitemap.xml` in Google Search Console and Bing Webmaster Tools.
-2. Update `SITE.chromeStoreUrl` in [`lib/site.ts`](lib/site.ts) once the Chrome Web Store listing goes live — the Install buttons and JSON-LD pick it up automatically.
+2. Keep `SITE.chromeStoreUrl` in [`lib/site.ts`](lib/site.ts) pointing at the live Chrome Web Store listing — the Install buttons, HowTo copy, and JSON-LD all read from it.
 3. Point the `crawly.site` domain at your host (Vercel is the easiest fit given `next/og` runs on the edge).
 
 ## Project layout

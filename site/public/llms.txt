@@ -3,6 +3,7 @@
 > A free, open source Chrome extension that records your clicks and keystrokes and replays them with a comic-book spider. Built for React and Next.js apps. Types character by character at 25 ms per key using native value setters, so controlled inputs accept every keystroke. Zero telemetry, zero network calls, everything stays in the browser.
 
 - Homepage: https://crawly.site
+- Chrome Web Store: https://chromewebstore.google.com/detail/crawly/gfnpolakklaamjmodeoemdjolbhbaamn
 - Source: https://github.com/yemon/crawly
 - License: Apache 2.0
 - Author: yemon
@@ -20,11 +21,11 @@ Crawly is not a CI test framework. It does not replace Cypress, Playwright, or S
 
 ## How to install
 
-1. `git clone https://github.com/yemon/crawly`
-2. Open `chrome://extensions` in your browser
-3. Turn on Developer mode (top-right)
-4. Click "Load unpacked" and select the `extension/` folder
-5. Pin the Crawly icon to your toolbar
+1. Open the Chrome Web Store listing: https://chromewebstore.google.com/detail/crawly/gfnpolakklaamjmodeoemdjolbhbaamn
+2. Click "Add to Chrome" and confirm the permissions prompt
+3. Pin the Crawly icon to your toolbar
+
+To run from source instead: `git clone https://github.com/yemon/crawly`, open `chrome://extensions`, turn on Developer mode, click "Load unpacked", and select the `extension/` folder.
 
 ## Key facts
 
@@ -42,7 +43,7 @@ Crawly is not a CI test framework. It does not replace Cypress, Playwright, or S
 
 | Criterion | Crawly | Cypress | Playwright | Selenium |
 | --- | --- | --- | --- | --- |
-| Setup | Load unpacked, <2 min | npm install + config | npm install + config | Driver + SDK |
+| Setup | One-click Chrome Web Store install | npm install + config | npm install + config | Driver + SDK |
 | Authoring | Record by using the app | JS test files | JS/TS/Python/.NET tests | Any language |
 | Runs where | Your browser tab | Cypress runner / CI | Headless/headed / CI | WebDriver grid |
 | Shareable format | .crawly.json | .cy.js | .spec.ts | Language-specific code |
@@ -52,7 +53,7 @@ Crawly is not a CI test framework. It does not replace Cypress, Playwright, or S
 ## Frequently asked
 
 - **What is Crawly?** A free, open source Chrome extension that records and replays UI flows on React/Next.js apps with an animated spider.
-- **How do I install it?** Clone the repo, load `extension/` unpacked in `chrome://extensions` with Developer mode on.
+- **How do I install it?** Add it from the Chrome Web Store: https://chromewebstore.google.com/detail/crawly/gfnpolakklaamjmodeoemdjolbhbaamn. Or clone the repo and load `extension/` unpacked in `chrome://extensions`.
 - **Does it send data anywhere?** No. `chrome.storage.local` only, zero network calls, no telemetry.
 - **Does it work with React controlled inputs?** Yes — it types with native value setters and dispatches real input events.
 - **Is it free?** Yes. Apache License 2.0.

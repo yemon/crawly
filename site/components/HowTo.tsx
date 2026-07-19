@@ -2,44 +2,47 @@
 // AI answer engines can lift a clean "How to install" list. The matching
 // HowTo JSON-LD lives in lib/structured-data.ts.
 
+import { SITE } from '@/lib/site';
+
 const STEPS = [
   {
     n: 1,
-    title: 'Clone the repository',
+    title: 'Open the Chrome Web Store listing',
     body: (
       <>
-        Run <code>git clone https://github.com/yemon/crawly</code> in your terminal.
+        Head to the{' '}
+        <a href={SITE.chromeStoreUrl} target="_blank" rel="noreferrer" className="underline">
+          Crawly listing on the Chrome Web Store
+        </a>{' '}
+        in Chrome, Edge, Brave, Arc, or any Chromium-based browser with
+        Manifest V3 support.
       </>
     ),
   },
   {
     n: 2,
-    title: 'Open the extensions page',
+    title: 'Add to Chrome',
     body: (
       <>
-        Open <code>chrome://extensions</code> in Chrome, Edge, Brave, Arc, or
-        any Chromium-based browser with Manifest V3 support.
+        Click <b>Add to Chrome</b> and confirm the permissions prompt.
       </>
     ),
   },
   {
     n: 3,
-    title: 'Enable Developer mode',
-    body: 'Turn on the Developer mode toggle in the top-right of the extensions page.',
+    title: 'Pin Crawly',
+    body: 'Pin the Crawly icon to your toolbar so you can start recording with one click.',
   },
   {
     n: 4,
-    title: 'Load unpacked',
+    title: 'Record your first crawl',
     body: (
       <>
-        Click <b>Load unpacked</b> and select the <code>extension/</code> folder from the cloned repo.
+        Open any React or Next.js app, click the Crawly icon, hit{' '}
+        <b>RECORD A CRAWL</b>, use your app, then <b>STOP &amp; SAVE</b>. Press{' '}
+        <b>RUN</b> to watch the spider replay it.
       </>
     ),
-  },
-  {
-    n: 5,
-    title: 'Pin Crawly',
-    body: 'Pin the Crawly icon to your toolbar so you can start recording with one click.',
   },
 ];
 
@@ -48,8 +51,8 @@ export function HowTo() {
     <section id="install" className="max-w-[1120px] mx-auto px-5 py-12">
       <h2 className="font-bang tracking-[2px] text-[40px] mb-5">HOW TO INSTALL CRAWLY</h2>
       <p className="max-w-prose text-[15px] text-neutral-800 mb-6">
-        Crawly ships as an unpacked Chrome extension. Total install time is under two minutes,
-        no build step required. A one-click Chrome Web Store install is coming soon.
+        Crawly is live on the Chrome Web Store. One click to add it, and you
+        are recording in under a minute — no build step, no account.
       </p>
       <ol className="grid gap-3 max-w-[720px] list-none p-0 m-0">
         {STEPS.map((s) => (

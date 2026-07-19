@@ -34,14 +34,22 @@ crawly/
 The extension, the demo, and the marketing site are independent — you can
 work on any one without installing anything for the others.
 
-## Install (unpacked, for development)
+## Install
 
-1. Open Chrome and go to `chrome://extensions`
-2. Turn on **Developer mode** (top right)
+Crawly is live on the Chrome Web Store:
+
+<https://chromewebstore.google.com/detail/crawly/gfnpolakklaamjmodeoemdjolbhbaamn>
+
+Click **Add to Chrome**, pin the icon to your toolbar, done. Works in any
+Chromium-based browser with Manifest V3 support (Chrome, Edge, Brave, Arc,
+Opera).
+
+### Or run from source (for development)
+
+1. Clone this repo
+2. Open `chrome://extensions` and turn on **Developer mode**
 3. Click **Load unpacked** and pick the [`extension/`](extension/) folder
-4. Pin Crawly to the toolbar. Done.
-
-Works in any Chromium-based browser that supports Manifest V3 (Chrome, Edge, Brave, Arc, Opera).
+4. Pin Crawly to the toolbar
 
 ## Quick start with the demo
 

@@ -95,7 +95,7 @@ export const faqLd = {
       name: 'How do I install Crawly?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Clone the repository from GitHub, open chrome://extensions in your browser, enable Developer mode, click "Load unpacked", and select the extension/ folder. Once the Chrome Web Store listing goes live you will be able to install it with one click.',
+        text: 'Open the Crawly listing on the Chrome Web Store (https://chromewebstore.google.com/detail/crawly/gfnpolakklaamjmodeoemdjolbhbaamn) and click "Add to Chrome". Pin the icon to your toolbar and you are ready to record. If you prefer to run from source, clone the GitHub repo and load extension/ unpacked from chrome://extensions with Developer mode on.',
       },
     },
     {
@@ -161,39 +161,33 @@ export const howToInstallLd = {
   '@type': 'HowTo',
   '@id': absoluteUrl('/#howto-install'),
   name: 'How to install Crawly',
-  description: 'Load the Crawly extension unpacked in any Chromium-based browser.',
-  totalTime: 'PT2M',
+  description: 'Install the Crawly extension from the Chrome Web Store in one click.',
+  totalTime: 'PT1M',
   estimatedCost: { '@type': 'MonetaryAmount', currency: 'USD', value: '0' },
   step: [
     {
       '@type': 'HowToStep',
       position: 1,
-      name: 'Clone the repository',
-      text: 'Run `git clone https://github.com/yemon/crawly` in your terminal.',
+      name: 'Open the Chrome Web Store listing',
+      text: `Open ${SITE.chromeStoreUrl} in Chrome, Edge, Brave, Arc, or any Chromium browser with Manifest V3 support.`,
     },
     {
       '@type': 'HowToStep',
       position: 2,
-      name: 'Open the extensions page',
-      text: 'Open chrome://extensions in Chrome, Edge, Brave, Arc, or any Chromium browser.',
+      name: 'Add to Chrome',
+      text: 'Click "Add to Chrome" and confirm the permissions prompt.',
     },
     {
       '@type': 'HowToStep',
       position: 3,
-      name: 'Enable Developer mode',
-      text: 'Turn on the Developer mode toggle in the top-right of the extensions page.',
+      name: 'Pin Crawly',
+      text: 'Pin the Crawly icon to your toolbar so you can start recording with one click.',
     },
     {
       '@type': 'HowToStep',
       position: 4,
-      name: 'Load unpacked',
-      text: 'Click "Load unpacked" and select the extension/ folder from the cloned repo.',
-    },
-    {
-      '@type': 'HowToStep',
-      position: 5,
-      name: 'Pin Crawly',
-      text: 'Pin the Crawly icon to your toolbar so you can start recording with one click.',
+      name: 'Record your first crawl',
+      text: 'Open any React or Next.js app, click the Crawly icon, hit "RECORD A CRAWL", use your app, then "STOP & SAVE". Press "RUN" to watch the spider replay it.',
     },
   ],
 } as const;

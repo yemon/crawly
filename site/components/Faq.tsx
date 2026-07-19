@@ -19,11 +19,26 @@ const QAS: { q: string; a: React.ReactNode }[] = [
     q: 'How do I install Crawly?',
     a: (
       <>
-        Clone the repository from GitHub, open <code>chrome://extensions</code> in your browser,
-        enable <b>Developer mode</b>, click <b>Load unpacked</b>, and select the{' '}
-        <code>extension/</code> folder. See the{' '}
-        <a href="#install" className="underline">step-by-step install guide</a>. A one-click
-        Chrome Web Store install is coming soon.
+        Open the{' '}
+        <a
+          href="https://chromewebstore.google.com/detail/crawly/gfnpolakklaamjmodeoemdjolbhbaamn"
+          target="_blank"
+          rel="noreferrer"
+          className="underline"
+        >
+          Crawly listing on the Chrome Web Store
+        </a>{' '}
+        and click <b>Add to Chrome</b>. Pin the icon to your toolbar and you
+        are done. Prefer to run from source? Clone the{' '}
+        <a
+          href="https://github.com/yemon/crawly"
+          target="_blank"
+          rel="noreferrer"
+          className="underline"
+        >
+          GitHub repo
+        </a>{' '}
+        and load <code>extension/</code> unpacked from <code>chrome://extensions</code>.
       </>
     ),
   },
