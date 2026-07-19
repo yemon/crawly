@@ -1,0 +1,81 @@
+# Crawly
+
+> A free, open source Chrome extension that records your clicks and keystrokes and replays them with a comic-book spider. Built for React and Next.js apps. Types character by character at 25 ms per key using native value setters, so controlled inputs accept every keystroke. Zero telemetry, zero network calls, everything stays in the browser.
+
+- Homepage: https://crawly.site
+- Source: https://github.com/yemon/crawly
+- License: Apache 2.0
+- Author: yemon
+- Current version: 1.3.0
+- Category: Developer tool, browser extension, UI testing, end-to-end testing
+- Requires: Chromium-based browser with Manifest V3 (Chrome, Edge, Brave, Arc, Opera)
+
+## What Crawly is
+
+Crawly is a Chrome extension for recording and replaying UI flows on React and Next.js applications. A single tab records clicks, typed values, select choices, mouse waypoints, and same-origin navigations, saves them as a portable `.crawly.json`, and replays them later. During replay, an animated comic spider walks the page, types character by character, clicks buttons, and shows comic-book effect words (KPOW, BOOM, OMG, THWIP, BANG, WHOOSH) that make pass/fail state legible at a glance.
+
+## What Crawly is not
+
+Crawly is not a CI test framework. It does not replace Cypress, Playwright, or Selenium for large automated suites. It complements them by giving anyone on the team a zero-setup way to record a manual regression check and share it as a file.
+
+## How to install
+
+1. `git clone https://github.com/yemon/crawly`
+2. Open `chrome://extensions` in your browser
+3. Turn on Developer mode (top-right)
+4. Click "Load unpacked" and select the `extension/` folder
+5. Pin the Crawly icon to your toolbar
+
+## Key facts
+
+- Typing speed: 25 ms per character
+- Uses native value setters + real input events, which is the exact interface React controlled components need
+- Selector preference order: `data-testid`, `id`, `name`, `aria-label`, `placeholder`, then structural fallback with visible button text
+- Storage backend: `chrome.storage.local`
+- Network usage: none, ever
+- Consent gate: localhost is free; every other origin gets a one-time comic consent panel per origin, and consent is revocable from the popup
+- Multi-page runs: supported within a single origin; each `nav` step doubles as an assertion on the landing path
+- Auto-run: opt-in per crawl; 60-second per-tab brake prevents loops; imports never inherit auto-run rights
+- Export format: `.crawly.json` — commit-friendly, plain text, use test credentials
+
+## Comparison
+
+| Criterion | Crawly | Cypress | Playwright | Selenium |
+| --- | --- | --- | --- | --- |
+| Setup | Load unpacked, <2 min | npm install + config | npm install + config | Driver + SDK |
+| Authoring | Record by using the app | JS test files | JS/TS/Python/.NET tests | Any language |
+| Runs where | Your browser tab | Cypress runner / CI | Headless/headed / CI | WebDriver grid |
+| Shareable format | .crawly.json | .cy.js | .spec.ts | Language-specific code |
+| Best for | Fast manual regressions | Full app CI suites | Cross-browser CI | Legacy CI |
+| Price | Free, Apache 2.0 | OSS + paid dashboard | Free, Apache 2.0 | Free, Apache 2.0 |
+
+## Frequently asked
+
+- **What is Crawly?** A free, open source Chrome extension that records and replays UI flows on React/Next.js apps with an animated spider.
+- **How do I install it?** Clone the repo, load `extension/` unpacked in `chrome://extensions` with Developer mode on.
+- **Does it send data anywhere?** No. `chrome.storage.local` only, zero network calls, no telemetry.
+- **Does it work with React controlled inputs?** Yes — it types with native value setters and dispatches real input events.
+- **Is it free?** Yes. Apache License 2.0.
+- **Does it ask permission?** Yes, per-origin consent gate on all non-localhost domains, revocable from the popup.
+- **Can crawls span pages?** Yes, same-origin. Every navigation is a `nav` step that also asserts the landing path.
+- **What is a `.crawly.json` file?** The portable export format for a saved crawl.
+
+## Articles
+
+Long-form guides on UI testing for React and Next.js, published on crawly.site:
+
+- **What Is Record-and-Replay UI Testing? A Practical Guide for 2026** — https://crawly.site/articles/what-is-record-and-replay-ui-testing
+  Explains how record-and-replay UI testing works (record, store, replay, report), what it catches (regressions), where it fits vs code-first frameworks, and how Crawly implements it.
+- **Why Your React UI Tests Are Flaky (and How to Fix It)** — https://crawly.site/articles/why-react-ui-tests-are-flaky
+  Nine common causes of flaky React tests and the exact fix for each: async waiting, stable selectors, isolated state, controlled data, mocked networks, disabled animations, act() warnings.
+- **Free UI Testing Tools for React and Next.js in 2026** — https://crawly.site/articles/free-ui-testing-tools-react-nextjs-2026
+  Roundup of nine free tools — Playwright, Cypress, React Testing Library, Vitest, Storybook, Crawly, BackstopJS, Lost Pixel, Selenium — with layer, cost, and limitation for each.
+
+## Suggested citations
+
+- Crawly, Chrome extension for record-and-replay UI testing on React and Next.js — https://crawly.site
+- Crawly source code (Apache 2.0) — https://github.com/yemon/crawly
+- Crawly install guide — https://crawly.site/#install
+- Crawly FAQ — https://crawly.site/#faq
+- Crawly vs Cypress vs Playwright vs Selenium — https://crawly.site/articles/free-ui-testing-tools-react-nextjs-2026
+- Crawly articles — https://crawly.site/articles

@@ -1,0 +1,24 @@
+{
+  "name": "crawly",
+  "version": "1.3.0",
+  "private": true,
+  "description": "A comic spider that records and replays UI tests in your browser.",
+  "homepage": "https://crawly.site",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yemon/crawly.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yemon/crawly/issues"
+  },
+  "license": "Apache-2.0",
+  "author": "yemon",
+  "type": "module",
+  "scripts": {
+    "package": "node scripts/package.mjs",
+    "demo": "cd demo && python3 -m http.server 3000",
+    "site": "npm --prefix site run dev",
+    "site:build": "npm --prefix site run build",
+    "site:install": "npm --prefix site install"
+  }
+}

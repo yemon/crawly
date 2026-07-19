@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crawly demo diner, page two</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; color: #111; background: #fff;
+    background-image: radial-gradient(circle, rgba(17,17,17,.06) 1px, transparent 1.3px);
+    background-size: 14px 14px;
+    font: 15px/1.5 system-ui, sans-serif;
+    display: flex; align-items: flex-start; justify-content: center; padding: 40px 16px;
+  }
+  .wrap { width: 460px; max-width: 100%; }
+  h1 { font-size: 30px; margin: 0 0 4px; }
+  .sub { color: #444; margin-bottom: 22px; }
+  form {
+    background: #fff; border: 3px solid #111; border-radius: 14px;
+    box-shadow: 5px 5px 0 #111; padding: 22px;
+  }
+  label { display: block; font-weight: 600; font-size: 13px; margin: 0 0 4px; }
+  input {
+    width: 100%; font: 15px system-ui; padding: 9px 10px;
+    border: 2.5px solid #111; border-radius: 9px;
+  }
+  button[type=submit] {
+    margin-top: 16px; width: 100%; font: 700 16px system-ui;
+    background: #111; color: #fff; border: 2.5px solid #111; border-radius: 10px;
+    padding: 11px 0; cursor: pointer; box-shadow: 3px 3px 0 rgba(17,17,17,.35);
+  }
+  #banner2 {
+    display: none; margin-top: 16px; border: 3px solid #111; border-radius: 12px;
+    background: #111; color: #fff; padding: 14px 16px; font-weight: 700;
+  }
+  #banner2.show { display: block; }
+  .back { margin-top: 14px; text-align: center; }
+  .back a { font-weight: 700; color: #111; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Page two: the checkout</h1>
+  <div class="sub">A second page, so you can record a crawl that spans a real navigation.</div>
+
+  <form id="coupons">
+    <label for="coupon">Coupon code</label>
+    <input id="coupon" name="coupon" placeholder="WEBSLINGER" autocomplete="off">
+    <button type="submit" id="applyBtn" data-testid="apply-coupon">Apply coupon</button>
+    <div id="banner2">Coupon applied! Free webs for a year.</div>
+  </form>
+
+  <div class="back"><a href="index.html" id="backHome">Back to page one</a></div>
+</div>
+<script>
+  document.getElementById('coupons').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('banner2').classList.add('show');
+  });
+</script>
+</body>
+</html>

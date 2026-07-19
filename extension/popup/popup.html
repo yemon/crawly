@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="popup.css">
+<title>Crawly</title>
+</head>
+<body>
+<header>
+  <div class="logo">CRAWLY</div>
+  <div class="hdr-right">
+    <div class="seg" id="themeSeg">
+      <button id="tNoir" data-theme="noir">NOIR</button>
+      <button id="tHero" data-theme="hero">HERO</button>
+    </div>
+    <div class="hdr-io">
+      <button id="importBtn" class="btn mini">IMPORT</button>
+      <button id="exportAllBtn" class="btn mini">EXPORT</button>
+      <input type="file" id="importFile" accept=".json,application/json" hidden>
+    </div>
+  </div>
+</header>
+
+<div id="dead" hidden>
+  <p id="deadMsg">Crawly cannot crawl this page.</p>
+  <button id="reloadBtn" class="btn" hidden>REFRESH TAB</button>
+</div>
+
+<main id="main" hidden>
+  <section class="card" id="siteCard">
+    <div class="origin" id="origin"></div>
+    <div class="row">
+      <span class="chip" id="consentChip"></span>
+      <button class="btn mini" id="consentBtn" hidden></button>
+    </div>
+    <label class="roam"><input type="checkbox" id="roam"><span>Let the spider roam this tab</span></label>
+  </section>
+
+  <section class="rec-block">
+    <button id="recordBtn" class="btn big"><span class="rec-dot"></span>RECORD A CRAWL</button>
+    <div id="recBox" hidden>
+      <div class="recline"><span class="dot"></span><span id="stepCount">0 steps</span></div>
+      <input id="recName" maxlength="60" placeholder="Name this crawl">
+      <div class="row">
+        <button id="stopBtn" class="btn primary">STOP &amp; SAVE</button>
+        <button id="cancelBtn" class="btn mini">TOSS IT</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="crawls">
+    <h2>ON THIS SITE</h2>
+    <div id="mine" class="list"></div>
+  </section>
+</main>
+
+<footer>
+  <a href="https://crawly.site" target="_blank" rel="noreferrer">crawly.site</a>
+  <a href="https://crawly.site/privacy" target="_blank" rel="noreferrer" class="ftr-privacy">privacy</a>
+  <span id="ver"></span>
+</footer>
+<div id="toast" hidden></div>
+<script src="popup.js"></script>
+</body>
+</html>

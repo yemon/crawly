@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crawly demo diner</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; color: #111; background: #fff;
+    background-image: radial-gradient(circle, rgba(17,17,17,.06) 1px, transparent 1.3px);
+    background-size: 14px 14px;
+    font: 15px/1.5 system-ui, sans-serif;
+    display: flex; align-items: flex-start; justify-content: center; padding: 40px 16px;
+  }
+  .wrap { width: 460px; max-width: 100%; }
+  h1 { font-size: 30px; margin: 0 0 4px; letter-spacing: .5px; }
+  .sub { color: #444; margin-bottom: 22px; }
+  form {
+    background: #fff; border: 3px solid #111; border-radius: 14px;
+    box-shadow: 5px 5px 0 #111; padding: 22px;
+  }
+  label { display: block; font-weight: 600; font-size: 13px; margin: 14px 0 4px; }
+  input, select, textarea {
+    width: 100%; font: 15px system-ui; padding: 9px 10px;
+    border: 2.5px solid #111; border-radius: 9px; background: #fff;
+  }
+  textarea { min-height: 70px; resize: vertical; }
+  .terms { display: flex; gap: 8px; align-items: center; margin-top: 16px; font-size: 13px; }
+  .terms input { width: 16px; height: 16px; accent-color: #111; }
+  button[type=submit] {
+    margin-top: 18px; width: 100%; font: 700 16px system-ui; letter-spacing: .4px;
+    background: #111; color: #fff; border: 2.5px solid #111; border-radius: 10px;
+    padding: 11px 0; cursor: pointer; box-shadow: 3px 3px 0 rgba(17,17,17,.35);
+  }
+  button[type=submit]:disabled { opacity: .45; cursor: not-allowed; }
+  #banner {
+    display: none; margin-top: 16px; border: 3px solid #111; border-radius: 12px;
+    background: #111; color: #fff; padding: 14px 16px; font-weight: 700;
+  }
+  #banner.show { display: block; }
+  .chaos { margin-top: 26px; border-top: 2px dashed #999; padding-top: 14px; }
+  .chaos h2 { font-size: 15px; margin: 0 0 8px; }
+  .chaos button {
+    font: 600 12px system-ui; background: #fff; border: 2px solid #111;
+    border-radius: 8px; padding: 6px 10px; margin: 0 8px 8px 0; cursor: pointer;
+  }
+  .chaos button.on { background: #111; color: #fff; }
+  .hint { font-size: 12px; color: #555; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Crawly demo diner</h1>
+  <div class="sub">Record a crawl on this form, then replay it. Then break things and watch the spider lose its mind.</div>
+
+  <form id="signup">
+    <label for="name">Full name</label>
+    <input id="name" name="name" placeholder="Peter Parker" autocomplete="off">
+
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" placeholder="pete@dailybugle.com" autocomplete="off">
+
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" placeholder="with great power...">
+
+    <label for="role">Role</label>
+    <select id="role" name="role">
+      <option value="">Pick one</option>
+      <option value="dev">Developer</option>
+      <option value="qa">QA Hero</option>
+      <option value="pm">Product Person</option>
+    </select>
+
+    <label for="bio">Bio</label>
+    <textarea id="bio" name="bio" placeholder="Friendly neighborhood tester"></textarea>
+
+    <div class="terms">
+      <input type="checkbox" id="terms" name="terms">
+      <label for="terms" style="margin:0">I accept the extremely serious terms</label>
+    </div>
+
+    <button type="submit" id="submitBtn" data-testid="signup-submit">Sign me up</button>
+    <div id="banner">Signed up! The formidable form has been conquered.</div>
+  </form>
+
+  <div style="margin-top:14px; text-align:center">
+    <a href="two.html" id="toPage2" style="font-weight:700; color:#111">Continue to page two</a>
+  </div>
+
+  <div class="chaos">
+    <h2>Chaos controls (simulate app changes)</h2>
+    <button type="button" id="chaosDisable">Disable submit</button>
+    <button type="button" id="chaosHide">Remove submit</button>
+    <button type="button" id="chaosRename">Rename submit</button>
+    <div class="hint">Toggle one, run your crawl again, enjoy the OMG! and BOOM!</div>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('signup');
+  const banner = document.getElementById('banner');
+  const btn = document.getElementById('submitBtn');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    banner.classList.add('show');
+    setTimeout(() => banner.classList.remove('show'), 4000);
+  });
+  const chaosDisable = document.getElementById('chaosDisable');
+  const chaosHide = document.getElementById('chaosHide');
+  const chaosRename = document.getElementById('chaosRename');
+  chaosDisable.addEventListener('click', () => {
+    btn.disabled = !btn.disabled;
+    chaosDisable.classList.toggle('on', btn.disabled);
+  });
+  chaosHide.addEventListener('click', () => {
+    const hidden = btn.style.display === 'none';
+    btn.style.display = hidden ? '' : 'none';
+    chaosHide.classList.toggle('on', !hidden);
+  });
+  chaosRename.addEventListener('click', () => {
+    const renamed = btn.textContent !== 'Sign me up';
+    btn.textContent = renamed ? 'Sign me up' : 'Launch the rocket';
+    chaosRename.classList.toggle('on', !renamed);
+  });
+</script>
+</body>
+</html>

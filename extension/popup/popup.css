@@ -1,0 +1,151 @@
+@font-face {
+  font-family: 'Bangers';
+  src: url('../fonts/bangers.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  width: 400px; height: 560px; margin: 0; color: #111; background: #fff;
+  background-image: radial-gradient(circle, rgba(17,17,17,.07) 1px, transparent 1.3px);
+  background-size: 12px 12px;
+  font: 13px/1.4 system-ui, sans-serif;
+  display: flex; flex-direction: column;
+}
+
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; border-bottom: 3px solid #111; background: #fff;
+  flex: none; gap: 10px;
+}
+.logo { font: 28px/1 'Bangers', cursive; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
+
+.hdr-right { display: flex; flex-direction: row; align-items: center; gap: 6px; }
+.hdr-io { display: flex; gap: 6px; }
+.hdr-io .btn.mini { font-size: 12px; padding: 3px 8px 1px; }
+
+.seg { display: flex; border: 2.5px solid #111; border-radius: 999px; overflow: hidden; background: #fff; }
+.seg button {
+  font: 13px 'Bangers', cursive; letter-spacing: 1px; border: 0; background: #fff; color: #111;
+  padding: 4px 9px 2px; cursor: pointer;
+}
+.seg button.on { background: #111; color: #fff; }
+.seg button:first-child { border-right: 2.5px solid #111; }
+.seg button.on[data-theme="hero"] { background: #e02f2f; color: #fff; }
+
+main {
+  padding: 10px 14px 4px; flex: 1; min-height: 0;
+  display: flex; flex-direction: column;
+}
+section { margin-bottom: 12px; }
+section.crawls {
+  flex: 1; min-height: 0; margin-bottom: 0;
+  display: flex; flex-direction: column;
+}
+section.crawls h2 { flex: none; }
+section.crawls .list {
+  flex: 1; min-height: 0; overflow-y: auto;
+  padding-right: 4px; margin-right: -4px;
+}
+.card {
+  border: 3px solid #111; border-radius: 12px; background: #fff;
+  box-shadow: 3px 3px 0 #111; padding: 10px 12px; margin-bottom: 12px;
+}
+.origin { font: 12px ui-monospace, monospace; font-weight: 600; word-break: break-all; margin-bottom: 6px; }
+.row { display: flex; gap: 8px; align-items: center; }
+.chip {
+  font: 14px 'Bangers', cursive; letter-spacing: 1px; padding: 2px 10px 0;
+  border: 2px solid #111; border-radius: 999px; background: #fff;
+}
+.chip.ok { background: #111; color: #fff; }
+.roam {
+  display: flex; gap: 10px; align-items: center; margin-top: 10px;
+  padding: 8px 12px 6px;
+  border: 2.5px solid #111; border-radius: 10px;
+  background: #ffe680;
+  box-shadow: 2px 2px 0 #111;
+  cursor: pointer; user-select: none;
+  font: 16px 'Bangers', cursive; letter-spacing: 1px;
+}
+.roam input { accent-color: #d21; width: 18px; height: 18px; flex: none; }
+
+.btn {
+  font: 17px 'Bangers', cursive; letter-spacing: 1.2px; padding: 6px 14px 4px;
+  border: 3px solid #111; border-radius: 10px; background: #fff; color: #111;
+  cursor: pointer; box-shadow: 2px 2px 0 #111;
+}
+.btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #111; }
+.btn:hover { background: #111; color: #fff; }
+.btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: 2px 2px 0 #111; transform: none; background: #fff; color: #111; }
+.btn:disabled:hover { background: #fff; color: #111; }
+.btn.primary { background: #111; color: #fff; }
+.btn.primary:hover { background: #fff; color: #111; }
+.btn.big { width: 100%; font-size: 22px; padding: 9px 0 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.btn.mini { font-size: 13px; padding: 3px 10px 1px; border-width: 2px; box-shadow: 1px 1px 0 #111; }
+.rec-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #d21; border: 2px solid #111; flex: none;
+  transform: translateY(-2px);
+}
+#recordBtn:hover .rec-dot { background: #ff5a5a; }
+
+.rec-block { margin-bottom: 12px; }
+#recBox { margin-top: 8px; }
+.recline { display: flex; align-items: center; gap: 8px; font: 16px 'Bangers', cursive; letter-spacing: 1px; margin-bottom: 8px; }
+.recline .dot { width: 10px; height: 10px; border-radius: 50%; background: #d21; animation: blink 1s steps(2, start) infinite; }
+@keyframes blink { to { opacity: .2; } }
+#recName {
+  width: 100%; font: 14px system-ui; padding: 6px 8px; margin-bottom: 8px;
+  border: 2.5px solid #111; border-radius: 8px; background: #fff;
+}
+
+h2 { font: 19px 'Bangers', cursive; letter-spacing: 1.5px; margin: 4px 2px 6px; }
+.list { display: flex; flex-direction: column; gap: 8px; }
+.item {
+  border: 2.5px solid #111; border-radius: 10px; background: #fff;
+  box-shadow: 2px 2px 0 #111; padding: 8px 10px;
+}
+.item.off { opacity: .55; }
+.item .top { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.item .name {
+  flex: 1; min-width: 0;
+  font-weight: 700; font-size: 13px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.item .meta { font-size: 11px; color: #444; margin-top: 3px; white-space: nowrap; }
+.item .acts { display: flex; gap: 6px; margin-top: 7px; align-items: center; flex-wrap: wrap; }
+.switch { position: relative; width: 34px; height: 18px; flex: none; }
+.switch input { opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; position: absolute; z-index: 2; }
+.switch .tr {
+  position: absolute; inset: 0; border: 2px solid #111; border-radius: 999px; background: #fff; transition: background .15s;
+}
+.switch .tr::after {
+  content: ''; position: absolute; top: 1px; left: 1px; width: 10px; height: 10px;
+  border-radius: 50%; background: #111; transition: left .15s;
+}
+.switch input:checked + .tr { background: #111; }
+.switch input:checked + .tr::after { left: 17px; background: #fff; }
+
+.btn.mini.onAuto { background: #111; color: #fff; }
+#toast {
+  position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%);
+  background: #111; color: #fff; border: 2.5px solid #111; border-radius: 10px;
+  font: 15px 'Bangers', cursive; letter-spacing: 1px; padding: 7px 16px 5px;
+  box-shadow: 3px 3px 0 rgba(17,17,17,.4); z-index: 50; max-width: 300px; text-align: center;
+}
+
+#dead { padding: 26px 18px; text-align: center; flex: 1; }
+#dead p { font: 18px 'Bangers', cursive; letter-spacing: 1px; }
+
+footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 14px 10px; border-top: 3px solid #111; margin-top: 2px; background: #fff;
+  flex: none;
+}
+footer a { font: 16px 'Bangers', cursive; letter-spacing: 1.5px; color: #111; text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+footer a.ftr-privacy { font-size: 12px; letter-spacing: 1px; color: #555; margin-left: -2px; }
+footer span { font-size: 11px; color: #555; margin-left: auto; }
+.empty { font-size: 12px; color: #555; padding: 2px 2px 6px; }

@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deskly — Support Desk</title>
+<style>
+  :root {
+    --bg: #f7f8fb;
+    --panel: #ffffff;
+    --border: #e4e7ee;
+    --border-strong: #cbd0da;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --muted-2: #94a3b8;
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --primary-tint: #eef2ff;
+    --primary-tint-2: #e0e7ff;
+    --success-bg: #dcfce7;
+    --success-fg: #14532d;
+    --warning-bg: #fef3c7;
+    --warning-fg: #713f12;
+    --danger-bg: #fee2e2;
+    --danger-fg: #7f1d1d;
+    --info-bg: #dbeafe;
+    --info-fg: #1e3a8a;
+    --neutral-bg: #f1f5f9;
+    --neutral-fg: #334155;
+    --shadow-sm: 0 1px 2px rgba(15,23,42,.06);
+    --shadow-md: 0 6px 20px -8px rgba(15,23,42,.12), 0 1px 2px rgba(15,23,42,.05);
+    --shadow-lg: 0 24px 60px -20px rgba(15,23,42,.28), 0 2px 8px rgba(15,23,42,.08);
+    --radius: 10px;
+    --radius-sm: 7px;
+    --radius-lg: 14px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+  }
+
+  button { font: inherit; color: inherit; cursor: pointer; }
+  input, select, textarea, button { font-family: inherit; }
+  a { color: inherit; }
+
+  /* ─────────── HEADER ─────────── */
+  .app-header {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: 24px;
+    height: 60px; padding: 0 24px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-mark {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: #fff; display: grid; place-items: center;
+    font-weight: 800; font-size: 14px; letter-spacing: .5px;
+    box-shadow: 0 1px 2px rgba(79,70,229,.35);
+  }
+  .brand-name {
+    font-weight: 700; font-size: 16px; letter-spacing: .2px;
+  }
+  .brand-tag {
+    color: var(--muted); font-size: 13px; margin-left: 2px;
+  }
+
+  .primary-nav {
+    display: flex; align-items: center; gap: 4px; margin-left: 20px;
+  }
+  .primary-nav a {
+    color: var(--neutral-fg); text-decoration: none;
+    padding: 6px 12px; border-radius: 8px;
+    font-weight: 500; font-size: 13.5px;
+    transition: background .12s ease, color .12s ease;
+  }
+  .primary-nav a:hover { background: var(--neutral-bg); color: var(--ink); }
+  .primary-nav a.active {
+    background: var(--primary-tint); color: var(--primary);
+  }
+
+  .header-right {
+    margin-left: auto; display: flex; align-items: center; gap: 10px;
+  }
+  .search {
+    position: relative;
+  }
+  .search input {
+    width: 260px; height: 36px;
+    padding: 0 12px 0 34px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    border-radius: 8px; font-size: 13.5px; color: var(--ink);
+    outline: none; transition: border-color .12s, box-shadow .12s, background .12s;
+  }
+  .search input:focus {
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(79,70,229,.12);
+  }
+  .search::before {
+    content: ""; position: absolute; left: 11px; top: 50%;
+    width: 14px; height: 14px; transform: translateY(-50%);
+    background: no-repeat center/contain url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><path d='m21 21-4.3-4.3'/></svg>");
+    pointer-events: none;
+  }
+
+  .icon-btn {
+    position: relative;
+    width: 36px; height: 36px; border-radius: 8px;
+    background: transparent; border: 1px solid transparent;
+    display: grid; place-items: center;
+  }
+  .icon-btn:hover { background: var(--neutral-bg); }
+  .icon-btn svg { width: 18px; height: 18px; color: var(--neutral-fg); }
+  .icon-btn .dot {
+    position: absolute; top: 8px; right: 8px;
+    width: 8px; height: 8px; border-radius: 50%; background: #ef4444;
+    border: 2px solid #fff;
+  }
+
+  .avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: grid; place-items: center;
+    color: #fff; font-weight: 600; font-size: 12px;
+    background: #0f172a; user-select: none;
+  }
+  .avatar.sm { width: 26px; height: 26px; font-size: 10.5px; }
+  .avatar.a { background: linear-gradient(135deg,#ec4899,#8b5cf6); }
+  .avatar.b { background: linear-gradient(135deg,#06b6d4,#4f46e5); }
+  .avatar.c { background: linear-gradient(135deg,#f59e0b,#ef4444); }
+  .avatar.d { background: linear-gradient(135deg,#10b981,#0ea5e9); }
+  .avatar.e { background: linear-gradient(135deg,#7c3aed,#ec4899); }
+
+  .user-chip {
+    display: flex; align-items: center; gap: 10px;
+    padding: 4px 10px 4px 4px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--panel);
+    cursor: pointer; transition: background .12s;
+  }
+  .user-chip:hover { background: var(--neutral-bg); }
+  .user-chip .name { font-weight: 600; font-size: 13px; }
+  .user-chip .role { font-size: 11.5px; color: var(--muted); margin-top: -2px; }
+  .user-chip .col { line-height: 1.15; }
+
+  /* ─────────── APP LAYOUT ─────────── */
+  .app {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: calc(100vh - 60px);
+  }
+
+  /* ─────────── SIDEBAR ─────────── */
+  aside.sidebar {
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    padding: 20px 14px;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .side-group h4 {
+    margin: 0 8px 8px;
+    font-size: 11px; letter-spacing: .8px; text-transform: uppercase;
+    color: var(--muted-2); font-weight: 700;
+  }
+  .side-list { display: flex; flex-direction: column; gap: 2px; }
+  .side-list button {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 10px; border-radius: 8px; border: 0; background: transparent;
+    text-align: left; color: var(--neutral-fg); font-weight: 500; font-size: 13.5px;
+  }
+  .side-list button:hover { background: var(--neutral-bg); color: var(--ink); }
+  .side-list button.active {
+    background: var(--primary-tint); color: var(--primary); font-weight: 600;
+  }
+  .side-list button .count {
+    margin-left: auto;
+    padding: 1px 8px; border-radius: 999px;
+    background: var(--neutral-bg); color: var(--neutral-fg);
+    font-size: 11.5px; font-weight: 600;
+  }
+  .side-list button.active .count {
+    background: var(--primary-tint-2); color: var(--primary);
+  }
+  .side-list .swatch {
+    width: 8px; height: 8px; border-radius: 50%; flex: none;
+  }
+  .swatch.urgent { background: #ef4444; }
+  .swatch.high { background: #f59e0b; }
+  .swatch.medium { background: #3b82f6; }
+  .swatch.low { background: #10b981; }
+
+  .team-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 10px; border-radius: 8px;
+  }
+  .team-row:hover { background: var(--neutral-bg); }
+  .team-row .name { font-size: 13px; font-weight: 500; }
+  .team-row .status {
+    margin-left: auto; width: 8px; height: 8px; border-radius: 50%;
+  }
+  .team-row .status.on { background: #10b981; }
+  .team-row .status.away { background: #f59e0b; }
+  .team-row .status.off { background: #cbd5e1; }
+
+  /* ─────────── MAIN ─────────── */
+  main.content {
+    padding: 22px 28px 40px;
+    min-width: 0;
+  }
+  .page-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 22px; flex-wrap: wrap;
+  }
+  .crumbs {
+    color: var(--muted); font-size: 12.5px; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .crumbs .sep { color: var(--muted-2); }
+  .page-title { font-size: 26px; font-weight: 700; margin: 0; letter-spacing: -.2px; }
+  .page-sub { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
+  .page-actions { display: flex; align-items: center; gap: 10px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 36px; padding: 0 14px; border-radius: 8px;
+    background: var(--panel); color: var(--ink);
+    border: 1px solid var(--border);
+    font-size: 13.5px; font-weight: 600;
+    transition: background .12s, border-color .12s, transform .06s;
+  }
+  .btn:hover { background: var(--neutral-bg); border-color: var(--border-strong); }
+  .btn:active { transform: translateY(1px); }
+  .btn.primary {
+    background: var(--primary); color: #fff; border-color: var(--primary);
+    box-shadow: 0 1px 2px rgba(79,70,229,.35);
+  }
+  .btn.primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+  .btn.ghost { border-color: transparent; background: transparent; }
+  .btn.ghost:hover { background: var(--neutral-bg); }
+  .btn.danger { color: #b91c1c; }
+  .btn.danger:hover { background: #fee2e2; border-color: #fecaca; }
+  .btn svg { width: 15px; height: 15px; }
+  .btn:disabled { opacity: .55; cursor: not-allowed; }
+
+  /* stat cards */
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin-bottom: 20px;
+  }
+  .stat {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .stat .label {
+    font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .6px;
+    font-weight: 600;
+  }
+  .stat .value {
+    font-size: 26px; font-weight: 700; margin-top: 4px; letter-spacing: -.3px;
+  }
+  .stat .delta { font-size: 12px; margin-top: 4px; font-weight: 600; }
+  .stat .delta.up { color: #16a34a; }
+  .stat .delta.down { color: #dc2626; }
+  .stat .delta.flat { color: var(--muted); }
+
+  /* toolbar */
+  .toolbar {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .toolbar .search input { width: 300px; }
+  select.filter, input.date {
+    height: 36px; padding: 0 30px 0 12px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--panel);
+    font-size: 13.5px; color: var(--ink); min-width: 130px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 14px;
+    cursor: pointer;
+  }
+  input.date {
+    background-image: none;
+    padding-right: 12px;
+  }
+
+  /* table */
+  .table-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  table.tickets {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    font-size: 13.5px;
+  }
+  table.tickets thead th {
+    background: #fafbfd;
+    text-align: left;
+    padding: 11px 16px;
+    font-size: 12px; text-transform: uppercase; letter-spacing: .6px;
+    color: var(--muted); font-weight: 700;
+    border-bottom: 1px solid var(--border);
+  }
+  table.tickets tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  table.tickets tbody tr:last-child td { border-bottom: 0; }
+  table.tickets tbody tr:hover { background: #fafbfd; }
+  table.tickets tbody tr.fresh {
+    animation: fresh 1.4s ease-out;
+  }
+  @keyframes fresh {
+    from { background: #eef2ff; }
+    to { background: transparent; }
+  }
+  .cell-id { font-family: ui-monospace, "SF Mono", Menlo, monospace; color: var(--muted); font-size: 12.5px; }
+  .cell-subject {
+    font-weight: 600; color: var(--ink); max-width: 320px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .cell-cust {
+    display: flex; align-items: center; gap: 8px;
+    white-space: nowrap;
+  }
+  .cell-cust .who { line-height: 1.2; }
+  .cell-cust .who .n { font-weight: 600; }
+  .cell-cust .who .e { font-size: 11.5px; color: var(--muted); }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 9px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor; opacity: .8;
+  }
+  .badge.urgent  { background: var(--danger-bg);  color: var(--danger-fg); }
+  .badge.high    { background: var(--warning-bg); color: var(--warning-fg); }
+  .badge.medium  { background: var(--info-bg);    color: var(--info-fg); }
+  .badge.low     { background: var(--success-bg); color: var(--success-fg); }
+  .badge.open    { background: #f0f9ff; color: #075985; }
+  .badge.progress{ background: #ede9fe; color: #5b21b6; }
+  .badge.waiting { background: #fef3c7; color: #713f12; }
+  .badge.resolved{ background: #dcfce7; color: #14532d; }
+
+  .row-actions {
+    display: flex; align-items: center; gap: 4px; justify-content: flex-end;
+  }
+  .icon-only {
+    width: 28px; height: 28px; border-radius: 6px;
+    display: grid; place-items: center;
+    background: transparent; border: 1px solid transparent;
+    color: var(--muted);
+  }
+  .icon-only:hover { background: var(--neutral-bg); color: var(--ink); }
+  .icon-only svg { width: 15px; height: 15px; }
+
+  .pager {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 12.5px;
+  }
+  .pager .pgs { display: flex; gap: 4px; }
+  .pager .pgs button {
+    min-width: 28px; height: 28px; padding: 0 10px;
+    border: 1px solid var(--border); background: var(--panel);
+    border-radius: 6px; font-size: 12.5px; font-weight: 600;
+    color: var(--neutral-fg);
+  }
+  .pager .pgs button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .pager .pgs button:hover:not(.active) { background: var(--neutral-bg); }
+
+  /* ─────────── CREATE VIEW ─────────── */
+  #createView { display: none; }
+  #createView.show { display: block; }
+  #listView.hide { display: none; }
+
+  .stepper {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 24px;
+    background: var(--panel);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 14px 20px;
+    box-shadow: var(--shadow-sm);
+  }
+  .stepper .step {
+    display: flex; align-items: center; gap: 12px; flex: 1;
+  }
+  .stepper .num {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 1.5px solid var(--border-strong);
+    background: #fff; color: var(--muted);
+    display: grid; place-items: center; font-weight: 700; font-size: 13px;
+    flex: none; transition: all .15s;
+  }
+  .stepper .step.done .num { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .stepper .step.active .num {
+    background: #fff; color: var(--primary); border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(79,70,229,.15);
+  }
+  .stepper .step .lbl .t { font-weight: 600; font-size: 13.5px; color: var(--ink); }
+  .stepper .step .lbl .s { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .stepper .step:not(.active):not(.done) .lbl .t { color: var(--muted); }
+  .stepper .line {
+    flex: 1; height: 2px; background: var(--border); margin: 0 10px;
+    border-radius: 2px; transition: background .15s;
+  }
+  .stepper .line.done { background: var(--primary); }
+
+  .form-shell {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+  .form-body { padding: 26px 28px; }
+  .form-section-title { font-size: 18px; font-weight: 700; margin: 0; }
+  .form-section-sub { color: var(--muted); font-size: 13.5px; margin-top: 4px; margin-bottom: 20px; }
+
+  .grid { display: grid; gap: 16px; }
+  .grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-size: 12.5px; font-weight: 600; color: var(--neutral-fg);
+  }
+  .field .hint { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .field .req { color: #dc2626; }
+
+  .input, .select, .textarea {
+    width: 100%; height: 40px;
+    padding: 0 12px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--panel);
+    font-size: 14px; color: var(--ink);
+    transition: border-color .12s, box-shadow .12s;
+    outline: none;
+  }
+  .textarea { height: auto; padding: 10px 12px; min-height: 110px; resize: vertical; }
+  .select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+    background-repeat: no-repeat; background-position: right 12px center; background-size: 14px;
+    padding-right: 32px;
+  }
+  .input:focus, .select:focus, .textarea:focus {
+    border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79,70,229,.12);
+  }
+
+  .radio-cards {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+  .radio-card {
+    position: relative;
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px; cursor: pointer;
+    transition: border-color .12s, background .12s, box-shadow .12s;
+    background: var(--panel);
+  }
+  .radio-card:hover { border-color: var(--border-strong); }
+  .radio-card input { position: absolute; opacity: 0; pointer-events: none; }
+  .radio-card .r-head {
+    display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px;
+  }
+  .radio-card .r-dot {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 1.5px solid var(--border-strong); background: #fff;
+    display: grid; place-items: center; flex: none;
+  }
+  .radio-card .r-dot::after {
+    content: ""; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--primary); transform: scale(0);
+    transition: transform .12s;
+  }
+  .radio-card .r-sub { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+  .radio-card.on {
+    border-color: var(--primary); background: var(--primary-tint);
+    box-shadow: 0 0 0 3px rgba(79,70,229,.08);
+  }
+  .radio-card.on .r-dot { border-color: var(--primary); }
+  .radio-card.on .r-dot::after { transform: scale(1); }
+
+  .priority-pack {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  }
+  .prio {
+    text-align: center; border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 6px; cursor: pointer;
+    background: var(--panel); font-weight: 600; font-size: 13px;
+    transition: border-color .12s, background .12s;
+  }
+  .prio:hover { border-color: var(--border-strong); }
+  .prio input { display: none; }
+  .prio .tag {
+    display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    margin-right: 6px; vertical-align: middle;
+  }
+  .prio.low .tag { background: #10b981; }
+  .prio.medium .tag { background: #3b82f6; }
+  .prio.high .tag { background: #f59e0b; }
+  .prio.urgent .tag { background: #ef4444; }
+  .prio.on {
+    border-color: var(--primary); background: var(--primary-tint);
+    box-shadow: 0 0 0 3px rgba(79,70,229,.08);
+  }
+
+  .checkbox {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px; border: 1px solid var(--border); border-radius: 8px;
+    cursor: pointer; background: var(--panel);
+    transition: border-color .12s, background .12s;
+  }
+  .checkbox:hover { border-color: var(--border-strong); }
+  .checkbox input { width: 16px; height: 16px; margin-top: 2px; accent-color: var(--primary); }
+  .checkbox .lbl { font-weight: 600; font-size: 13.5px; }
+  .checkbox .lbl .s { display: block; font-weight: 400; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .checkbox.on { border-color: var(--primary); background: var(--primary-tint); }
+
+  .summary {
+    margin-top: 18px;
+    border: 1px dashed var(--border-strong); border-radius: 10px;
+    padding: 16px; background: #fafbfd;
+  }
+  .summary h4 { margin: 0 0 12px; font-size: 13.5px; letter-spacing: .3px; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .summary dl { margin: 0; display: grid; grid-template-columns: 140px 1fr; row-gap: 8px; column-gap: 12px; font-size: 13px; }
+  .summary dt { color: var(--muted); font-weight: 500; }
+  .summary dd { margin: 0; font-weight: 600; color: var(--ink); }
+
+  .form-footer {
+    padding: 18px 28px; border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fbfcfe;
+  }
+  .form-footer .left { color: var(--muted); font-size: 12.5px; }
+  .form-footer .right { display: flex; gap: 10px; }
+
+  /* toast */
+  #toast {
+    position: fixed; right: 24px; bottom: 24px; z-index: 30;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .toast-item {
+    background: var(--ink); color: #fff;
+    padding: 12px 16px; border-radius: 10px; min-width: 280px;
+    box-shadow: var(--shadow-lg);
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13.5px; font-weight: 500;
+    animation: toastIn .3s cubic-bezier(.2,1.6,.4,1);
+  }
+  .toast-item .tick {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: #10b981; display: grid; place-items: center;
+    flex: none;
+  }
+  .toast-item .tick svg { width: 14px; height: 14px; color: #fff; }
+  .toast-item.out { animation: toastOut .25s forwards; }
+  @keyframes toastIn { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+  @keyframes toastOut { to { transform: translateY(10px); opacity: 0; } }
+
+  /* small helpers */
+  .muted { color: var(--muted); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .empty {
+    display: grid; place-items: center; text-align: center;
+    padding: 60px 20px; color: var(--muted); font-size: 13.5px;
+  }
+
+  @media (max-width: 1100px) {
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .primary-nav { display: none; }
+    .search input { width: 180px; }
+  }
+
+  /* ─────────── CRAWLY DEMO OVERLAY ─────────── */
+  #crawly-canvas {
+    position: fixed; inset: 0; width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 100;
+  }
+  .fx-pow {
+    position: fixed; z-index: 102;
+    transform: translate(-50%, -50%);
+    font-family: "Impact", "Arial Black", system-ui, sans-serif;
+    color: #fff;
+    -webkit-text-stroke: 2.5px #141414;
+    paint-order: stroke fill;
+    text-shadow: 4px 4px 0 #141414;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    pointer-events: none;
+    font-weight: 900;
+    animation: powin 0.4s cubic-bezier(0.2, 1.8, 0.4, 1);
+  }
+  .fx-pow.small { font-size: 36px; }
+  .fx-pow.big { font-size: 68px; -webkit-text-stroke: 3px #141414; text-shadow: 6px 6px 0 #141414; }
+  .fx-pow.out { opacity: 0; transition: opacity 0.25s; }
+  @keyframes powin {
+    from { transform: translate(-50%, -50%) scale(0.2); }
+    60% { transform: translate(-50%, -50%) scale(1.22); }
+  }
+  .fx-bubble {
+    position: fixed; z-index: 101;
+    max-width: 260px;
+    background: #fff; color: #141414;
+    border: 3px solid #141414;
+    border-radius: 13px;
+    padding: 9px 14px 7px;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: 0.15px;
+    box-shadow: 4px 4px 0 rgba(17, 17, 17, 0.85);
+    transform: rotate(-1.2deg);
+    animation: powin 0.3s cubic-bezier(0.2, 1.6, 0.4, 1);
+    pointer-events: none;
+  }
+  .fx-bubble::after {
+    content: ''; position: absolute; bottom: -10px; left: 22px;
+    width: 14px; height: 14px;
+    background: #fff;
+    border-right: 3px solid #141414;
+    border-bottom: 3px solid #141414;
+    transform: rotate(45deg);
+  }
+  .fx-bubble.out { opacity: 0; transition: opacity 0.25s; }
+
+  #crawly-hud {
+    position: fixed; top: 76px; right: 24px; z-index: 103;
+    display: flex; align-items: center;
+    font-family: system-ui, sans-serif;
+    font-weight: 700; letter-spacing: .6px;
+    pointer-events: auto;
+  }
+  #crawly-hud .state {
+    display: none; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    box-shadow: 0 6px 20px -8px rgba(0,0,0,.35);
+  }
+  #crawly-hud .state.on { display: inline-flex; }
+  #crawly-hud .idle {
+    background: #4f46e5; color: #fff;
+    font-size: 13px;
+    padding: 10px 18px 10px 14px;
+    border: 0; cursor: pointer;
+    transition: background .12s ease, transform .06s ease;
+  }
+  #crawly-hud .idle:hover { background: #4338ca; }
+  #crawly-hud .idle:active { transform: translateY(1px); }
+  #crawly-hud .idle .tri {
+    display: inline-block; font-size: 10px; margin-right: 2px;
+  }
+  #crawly-hud .running {
+    background: #141414; color: #fff;
+    font-size: 12px;
+  }
+  #crawly-hud .pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #ef4444;
+    animation: pulse 1s steps(2, start) infinite;
+  }
+  #crawly-hud .stop {
+    margin-left: 6px; padding: 3px 9px 2px;
+    border: 0; background: rgba(255,255,255,.14); color: #fff;
+    border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: .3px;
+    cursor: pointer;
+  }
+  #crawly-hud .stop:hover { background: rgba(255,255,255,.24); }
+  @keyframes pulse { to { opacity: .25; } }
+  @media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    aside.sidebar { display: none; }
+    .grid.cols-2, .grid.cols-3 { grid-template-columns: 1fr; }
+    .radio-cards { grid-template-columns: 1fr; }
+    .priority-pack { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ───────────────── HEADER ───────────────── -->
+<header class="app-header" role="banner">
+  <div class="brand">
+    <div class="brand-mark">D</div>
+    <div>
+      <span class="brand-name">Deskly</span>
+      <span class="brand-tag">· Support Desk</span>
+    </div>
+  </div>
+
+  <nav class="primary-nav" aria-label="Primary">
+    <a href="#" data-testid="nav-dashboard">Dashboard</a>
+    <a href="#" class="active" data-testid="nav-tickets">Tickets</a>
+    <a href="#" data-testid="nav-customers">Customers</a>
+    <a href="#" data-testid="nav-kb">Knowledge base</a>
+    <a href="#" data-testid="nav-reports">Reports</a>
+    <a href="#" data-testid="nav-settings">Settings</a>
+  </nav>
+
+  <div class="header-right">
+    <div class="search">
+      <input type="search" placeholder="Search tickets, customers, macros…" data-testid="global-search" aria-label="Search">
+    </div>
+    <button class="icon-btn" title="Notifications" data-testid="notifications">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+      <span class="dot"></span>
+    </button>
+    <button class="icon-btn" title="Help" data-testid="help">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+    </button>
+    <button class="user-chip" data-testid="user-chip">
+      <span class="avatar a">AK</span>
+      <span class="col">
+        <span class="name">Ayesha Khan</span><br>
+        <span class="role">Support Lead</span>
+      </span>
+    </button>
+  </div>
+</header>
+
+<!-- ───────────────── LAYOUT ───────────────── -->
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" role="complementary" aria-label="Filters">
+
+    <div class="side-group">
+      <h4>Views</h4>
+      <div class="side-list">
+        <button class="active" data-testid="view-all">📥 All tickets<span class="count" id="cnt-all">8</span></button>
+        <button data-testid="view-mine">👤 Assigned to me<span class="count">18</span></button>
+        <button data-testid="view-unassigned">🕳 Unassigned<span class="count">23</span></button>
+        <button data-testid="view-mentions">🔔 Mentioning me<span class="count">4</span></button>
+        <button data-testid="view-sla">⏱ Breaching SLA<span class="count">2</span></button>
+      </div>
+    </div>
+
+    <div class="side-group">
+      <h4>Status</h4>
+      <div class="side-list">
+        <button data-testid="filter-status-open">Open<span class="count">24</span></button>
+        <button data-testid="filter-status-progress">In progress<span class="count">16</span></button>
+        <button data-testid="filter-status-waiting">Waiting on customer<span class="count">7</span></button>
+        <button data-testid="filter-status-resolved">Resolved<span class="count">81</span></button>
+      </div>
+    </div>
+
+    <div class="side-group">
+      <h4>Priority</h4>
+      <div class="side-list">
+        <button data-testid="filter-prio-urgent"><span class="swatch urgent"></span>Urgent<span class="count">3</span></button>
+        <button data-testid="filter-prio-high"><span class="swatch high"></span>High<span class="count">11</span></button>
+        <button data-testid="filter-prio-medium"><span class="swatch medium"></span>Medium<span class="count">58</span></button>
+        <button data-testid="filter-prio-low"><span class="swatch low"></span>Low<span class="count">56</span></button>
+      </div>
+    </div>
+
+    <div class="side-group">
+      <h4>Team</h4>
+      <div>
+        <div class="team-row"><span class="avatar sm b">MC</span><span class="name">Mia Chen</span><span class="status on" title="Online"></span></div>
+        <div class="team-row"><span class="avatar sm c">SY</span><span class="name">Sam Yoo</span><span class="status on"></span></div>
+        <div class="team-row"><span class="avatar sm d">PR</span><span class="name">Priya Rao</span><span class="status away"></span></div>
+        <div class="team-row"><span class="avatar sm e">JK</span><span class="name">Jordan Kim</span><span class="status off"></span></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="content" role="main">
+
+    <!-- ============ LIST VIEW ============ -->
+    <section id="listView">
+      <div class="page-head">
+        <div>
+          <div class="crumbs"><span>Support</span><span class="sep">/</span><span>Tickets</span></div>
+          <h1 class="page-title">Support Tickets</h1>
+          <div class="page-sub">Every conversation with a customer, in one place. Filter, prioritize, and jump in.</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn" data-testid="import-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+            Import
+          </button>
+          <button class="btn" data-testid="export-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+            Export
+          </button>
+          <button class="btn primary" id="newTicketBtn" data-testid="new-ticket">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            New ticket
+          </button>
+        </div>
+      </div>
+
+      <!-- STAT CARDS -->
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="label">Open</div>
+          <div class="value" id="statOpen">24</div>
+          <div class="delta up">▲ 6% vs last week</div>
+        </div>
+        <div class="stat">
+          <div class="label">Avg. first response</div>
+          <div class="value">17m</div>
+          <div class="delta up">▲ 4m faster</div>
+        </div>
+        <div class="stat">
+          <div class="label">Resolved today</div>
+          <div class="value">39</div>
+          <div class="delta flat">— on pace</div>
+        </div>
+        <div class="stat">
+          <div class="label">CSAT (7d)</div>
+          <div class="value">96%</div>
+          <div class="delta down">▼ 1%</div>
+        </div>
+      </div>
+
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+        <div class="search">
+          <input type="search" id="tblSearch" placeholder="Search this list…" data-testid="table-search" aria-label="Filter tickets">
+        </div>
+        <select class="filter" data-testid="filter-status">
+          <option>Status: any</option>
+          <option>Open</option>
+          <option>In progress</option>
+          <option>Waiting on customer</option>
+          <option>Resolved</option>
+        </select>
+        <select class="filter" data-testid="filter-priority">
+          <option>Priority: any</option>
+          <option>Urgent</option>
+          <option>High</option>
+          <option>Medium</option>
+          <option>Low</option>
+        </select>
+        <select class="filter" data-testid="filter-assignee">
+          <option>Assignee: any</option>
+          <option>Mia Chen</option>
+          <option>Sam Yoo</option>
+          <option>Priya Rao</option>
+          <option>Jordan Kim</option>
+          <option>Unassigned</option>
+        </select>
+        <select class="filter" data-testid="filter-sort">
+          <option>Sort: Newest first</option>
+          <option>Oldest first</option>
+          <option>Priority (high→low)</option>
+          <option>SLA due</option>
+        </select>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-card">
+        <table class="tickets" data-testid="tickets-table">
+          <thead>
+            <tr>
+              <th style="width:110px;">ID</th>
+              <th>Subject</th>
+              <th>Customer</th>
+              <th style="width:110px;">Priority</th>
+              <th style="width:150px;">Status</th>
+              <th style="width:140px;">Assignee</th>
+              <th style="width:110px;">Created</th>
+              <th style="width:60px; text-align:right;"></th>
+            </tr>
+          </thead>
+          <tbody id="ticketsBody">
+            <!-- rows injected by JS -->
+          </tbody>
+        </table>
+        <div class="pager">
+          <div>Showing 1–8 of 128 tickets</div>
+          <div class="pgs">
+            <button>‹</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>…</button>
+            <button>16</button>
+            <button>›</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CREATE VIEW (multi-step) ============ -->
+    <section id="createView">
+      <div class="page-head">
+        <div>
+          <div class="crumbs"><span>Support</span><span class="sep">/</span><span>Tickets</span><span class="sep">/</span><span>New ticket</span></div>
+          <h1 class="page-title">Create a new ticket</h1>
+          <div class="page-sub">Three quick steps — customer, details, then who handles it.</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn ghost" id="cancelCreate" data-testid="cancel-create">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Back to tickets
+          </button>
+        </div>
+      </div>
+
+      <!-- STEPPER -->
+      <div class="stepper" data-testid="stepper">
+        <div class="step active" data-step="1">
+          <div class="num">1</div>
+          <div class="lbl"><div class="t">Customer</div><div class="s">Who reported it</div></div>
+        </div>
+        <div class="line"></div>
+        <div class="step" data-step="2">
+          <div class="num">2</div>
+          <div class="lbl"><div class="t">Details</div><div class="s">What's going on</div></div>
+        </div>
+        <div class="line"></div>
+        <div class="step" data-step="3">
+          <div class="num">3</div>
+          <div class="lbl"><div class="t">Assign & review</div><div class="s">Route and confirm</div></div>
+        </div>
+      </div>
+
+      <div class="form-shell">
+        <!-- STEP 1 -->
+        <div class="form-body step-body" data-body="1">
+          <h2 class="form-section-title">Customer</h2>
+          <p class="form-section-sub">Choose an existing customer or add a new one to the workspace.</p>
+
+          <div class="radio-cards" role="radiogroup" aria-label="Customer type">
+            <label class="radio-card on" data-radio="new">
+              <input type="radio" name="cust-type" value="new" checked data-testid="cust-type-new">
+              <div class="r-head"><span class="r-dot"></span>New customer</div>
+              <div class="r-sub">First contact from someone we haven't onboarded yet.</div>
+            </label>
+            <label class="radio-card" data-radio="existing">
+              <input type="radio" name="cust-type" value="existing" data-testid="cust-type-existing">
+              <div class="r-head"><span class="r-dot"></span>Existing customer</div>
+              <div class="r-sub">Pull details from the customer directory.</div>
+            </label>
+          </div>
+
+          <div class="grid cols-2" style="margin-top:22px;">
+            <div class="field">
+              <label>First name <span class="req">*</span></label>
+              <input class="input" type="text" id="fFirst" data-testid="f-first" placeholder="Jane">
+            </div>
+            <div class="field">
+              <label>Last name <span class="req">*</span></label>
+              <input class="input" type="text" id="fLast" data-testid="f-last" placeholder="Doe">
+            </div>
+            <div class="field">
+              <label>Email <span class="req">*</span></label>
+              <input class="input" type="email" id="fEmail" data-testid="f-email" placeholder="jane@example.com">
+            </div>
+            <div class="field">
+              <label>Company</label>
+              <input class="input" type="text" id="fCompany" data-testid="f-company" placeholder="Acme Robotics">
+            </div>
+            <div class="field">
+              <label>Phone</label>
+              <input class="input" type="tel" id="fPhone" data-testid="f-phone" placeholder="+1 555 010 4477">
+            </div>
+            <div class="field">
+              <label>Country</label>
+              <select class="select" id="fCountry" data-testid="f-country">
+                <option>Select country</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Germany</option>
+                <option>India</option>
+                <option>Bangladesh</option>
+                <option>Japan</option>
+                <option>Australia</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-footer">
+          <div class="left">Step 1 of 3 — Customer</div>
+          <div class="right">
+            <button class="btn ghost" data-testid="btn-back-1" disabled>Back</button>
+            <button class="btn primary" id="step1Next" data-testid="btn-next-1">Next: details →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-shell" style="margin-top:20px; display:none;" data-shell="2">
+        <div class="form-body step-body" data-body="2">
+          <h2 class="form-section-title">Ticket details</h2>
+          <p class="form-section-sub">Describe the issue. Details help routing pick the right person.</p>
+
+          <div class="grid cols-2">
+            <div class="field" style="grid-column: 1 / -1;">
+              <label>Subject <span class="req">*</span></label>
+              <input class="input" type="text" id="fSubject" data-testid="f-subject" placeholder="Cannot reset password from the settings page">
+            </div>
+            <div class="field">
+              <label>Category</label>
+              <select class="select" id="fCategory" data-testid="f-category">
+                <option>Bug</option>
+                <option>Billing</option>
+                <option>Feature request</option>
+                <option>Account</option>
+                <option>Onboarding</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Channel</label>
+              <select class="select" id="fChannel" data-testid="f-channel">
+                <option>Email</option>
+                <option>Live chat</option>
+                <option>Phone</option>
+                <option>Twitter / X</option>
+                <option>In-app widget</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:16px;">
+            <label>Priority</label>
+            <div class="priority-pack" role="radiogroup" aria-label="Priority">
+              <label class="prio low"><input type="radio" name="prio" value="Low" data-testid="prio-low"><span class="tag"></span>Low</label>
+              <label class="prio medium on"><input type="radio" name="prio" value="Medium" checked data-testid="prio-medium"><span class="tag"></span>Medium</label>
+              <label class="prio high"><input type="radio" name="prio" value="High" data-testid="prio-high"><span class="tag"></span>High</label>
+              <label class="prio urgent"><input type="radio" name="prio" value="Urgent" data-testid="prio-urgent"><span class="tag"></span>Urgent</label>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:16px;">
+            <label>Description <span class="req">*</span></label>
+            <textarea class="textarea" id="fDesc" data-testid="f-desc" placeholder="What did the customer try? What did they expect? Paste any error messages here."></textarea>
+            <div class="hint">Tip: Markdown works. Screenshots stick to attachments.</div>
+          </div>
+
+          <div class="field" style="margin-top:16px;">
+            <label>Tags</label>
+            <input class="input" type="text" id="fTags" data-testid="f-tags" placeholder="password, auth, high-value">
+            <div class="hint">Comma-separated. Used for searchable segments.</div>
+          </div>
+        </div>
+        <div class="form-footer">
+          <div class="left">Step 2 of 3 — Details</div>
+          <div class="right">
+            <button class="btn" id="step2Back" data-testid="btn-back-2">← Back</button>
+            <button class="btn primary" id="step2Next" data-testid="btn-next-2">Next: assign →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-shell" style="margin-top:20px; display:none;" data-shell="3">
+        <div class="form-body step-body" data-body="3">
+          <h2 class="form-section-title">Assign & review</h2>
+          <p class="form-section-sub">Pick who handles it, set the SLA, and confirm.</p>
+
+          <div class="grid cols-2">
+            <div class="field">
+              <label>Assign to</label>
+              <select class="select" id="fAssignee" data-testid="f-assignee">
+                <option>Auto-assign</option>
+                <option>Mia Chen</option>
+                <option>Sam Yoo</option>
+                <option>Priya Rao</option>
+                <option>Jordan Kim</option>
+                <option>Ayesha Khan (me)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Due date</label>
+              <input class="input date" type="date" id="fDue" data-testid="f-due">
+            </div>
+            <div class="field">
+              <label>SLA plan</label>
+              <select class="select" id="fSla" data-testid="f-sla">
+                <option>Standard — 24h first response</option>
+                <option>Priority — 4h first response</option>
+                <option>Premium — 1h first response</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Team</label>
+              <select class="select" id="fTeam" data-testid="f-team">
+                <option>Frontline support</option>
+                <option>Engineering escalation</option>
+                <option>Billing team</option>
+                <option>Trust & Safety</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid cols-2" style="margin-top:16px;">
+            <label class="checkbox on" id="chkNotify">
+              <input type="checkbox" checked data-testid="chk-notify">
+              <div class="lbl">Notify customer via email
+                <span class="s">Sends a courtesy "we've got it" reply.</span>
+              </div>
+            </label>
+            <label class="checkbox" id="chkFollow">
+              <input type="checkbox" data-testid="chk-follow">
+              <div class="lbl">Follow this ticket
+                <span class="s">Get updates in your notifications feed.</span>
+              </div>
+            </label>
+          </div>
+
+          <label class="checkbox" style="margin-top:12px;" id="chkTerms">
+            <input type="checkbox" data-testid="chk-terms">
+            <div class="lbl">I confirm the details are accurate
+              <span class="s">Required — the customer sees anything sent from this ticket.</span>
+            </div>
+          </label>
+
+          <div class="summary" data-testid="summary">
+            <h4>Summary</h4>
+            <dl>
+              <dt>Customer</dt><dd id="sumCust">—</dd>
+              <dt>Email</dt><dd id="sumEmail">—</dd>
+              <dt>Subject</dt><dd id="sumSubject">—</dd>
+              <dt>Category / Priority</dt><dd><span id="sumCat">Bug</span> · <span id="sumPrio">Medium</span></dd>
+              <dt>Assignee</dt><dd id="sumAssign">Auto-assign</dd>
+              <dt>SLA</dt><dd id="sumSla">Standard — 24h first response</dd>
+            </dl>
+          </div>
+        </div>
+        <div class="form-footer">
+          <div class="left">Step 3 of 3 — Assign & review</div>
+          <div class="right">
+            <button class="btn" id="step3Back" data-testid="btn-back-3">← Back</button>
+            <button class="btn primary" id="submitBtn" data-testid="btn-submit" disabled>Create ticket</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="toast" aria-live="polite"></div>
+
+<canvas id="crawly-canvas" aria-hidden></canvas>
+<div id="crawly-hud" role="status">
+  <button id="crawly-start" class="state idle on" type="button">
+    <span class="tri">▶</span>
+    <span>Start Crawly demo</span>
+  </button>
+  <div id="crawly-running" class="state running">
+    <span class="pulse"></span>
+    <span>CRAWLY · REPLAYING</span>
+    <button class="stop" id="crawly-stop" type="button">stop</button>
+  </div>
+</div>
+
+<script>
+// ─────────── Sample data ───────────
+const SEED = [
+  { id:'TCK-1024', subject:'Cannot reset password from settings page', name:'Anna Rivera', email:'anna@brightloop.co', prio:'Urgent', status:'Open',        assignee:'Mia Chen',   ago:'12m ago' },
+  { id:'TCK-1023', subject:'Invoice discrepancy on July renewal',      name:'Marco Bell',  email:'marco@tavo.media',   prio:'High',   status:'In progress', assignee:'Sam Yoo',   ago:'40m ago' },
+  { id:'TCK-1022', subject:'Feature request: dark mode for reports',   name:'Kwame Osei',  email:'kwame@osei.dev',    prio:'Low',    status:'Open',        assignee:'Unassigned',ago:'1h ago' },
+  { id:'TCK-1021', subject:'2FA code email is not arriving',           name:'Reya Sundar', email:'reya@sundar.io',    prio:'High',   status:'In progress', assignee:'Priya Rao', ago:'2h ago' },
+  { id:'TCK-1020', subject:'Bulk export fails after 5MB',              name:'Ivan Petrov', email:'ivan@petrov.eu',    prio:'Medium', status:'Waiting on customer', assignee:'Mia Chen', ago:'4h ago' },
+  { id:'TCK-1019', subject:'Blank screen on iOS Safari 17.3',          name:'Lex Halberg', email:'lex@nikto.studios', prio:'High',   status:'Open',        assignee:'Sam Yoo',   ago:'6h ago' },
+  { id:'TCK-1018', subject:'Webhook retry is doubling deliveries',     name:'Odessa Kwon', email:'odessa@kwon.dev',   prio:'Medium', status:'Resolved',    assignee:'Priya Rao', ago:'yesterday' },
+  { id:'TCK-1017', subject:'Deactivate account request',               name:'Bao Tran',    email:'bao@tran.co',       prio:'Low',    status:'Resolved',    assignee:'Mia Chen',  ago:'yesterday' },
+];
+
+const STATUS_CLASS = { 'Open':'open', 'In progress':'progress', 'Waiting on customer':'waiting', 'Resolved':'resolved' };
+const PRIO_CLASS   = { 'Urgent':'urgent', 'High':'high', 'Medium':'medium', 'Low':'low' };
+
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+function initials(n){ return n.split(' ').map(w=>w[0]).filter(Boolean).slice(0,2).join('').toUpperCase(); }
+
+function initialColor(i){ return ['b','c','d','e','a'][i % 5]; }
+
+// ─────────── Table render ───────────
+function rowHTML(t, idx, fresh){
+  const asg = t.assignee === 'Unassigned'
+    ? '<span class="muted" style="font-size:12.5px;">Unassigned</span>'
+    : `<div class="cell-cust"><span class="avatar sm ${initialColor(idx+2)}">${initials(t.assignee)}</span>${t.assignee}</div>`;
+  return `
+    <tr class="${fresh ? 'fresh' : ''}" data-testid="row-${t.id}">
+      <td class="cell-id">${t.id}</td>
+      <td class="cell-subject">${t.subject}</td>
+      <td>
+        <div class="cell-cust">
+          <span class="avatar sm ${initialColor(idx)}">${initials(t.name)}</span>
+          <div class="who"><div class="n">${t.name}</div><div class="e">${t.email}</div></div>
+        </div>
+      </td>
+      <td><span class="badge ${PRIO_CLASS[t.prio]}">${t.prio}</span></td>
+      <td><span class="badge ${STATUS_CLASS[t.status]}">${t.status}</span></td>
+      <td>${asg}</td>
+      <td class="muted">${t.ago}</td>
+      <td>
+        <div class="row-actions">
+          <button class="icon-only" title="Open" data-testid="row-open-${t.id}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+          </button>
+          <button class="icon-only" title="More" data-testid="row-more-${t.id}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>`;
+}
+
+function renderTable(){
+  const body = $('#ticketsBody');
+  body.innerHTML = SEED.map((t,i)=>rowHTML(t,i,false)).join('');
+  $('#cnt-all').textContent = SEED.length;
+}
+renderTable();
+
+// ─────────── View switching ───────────
+const listView = $('#listView');
+const createView = $('#createView');
+function goCreate(){
+  resetForm();
+  listView.classList.add('hide');
+  createView.classList.add('show');
+  window.scrollTo({ top: 0, behavior:'instant' });
+  focusFirstOfStep(1);
+}
+function goList(){
+  createView.classList.remove('show');
+  listView.classList.remove('hide');
+  window.scrollTo({ top: 0, behavior:'instant' });
+}
+$('#newTicketBtn').addEventListener('click', goCreate);
+$('#cancelCreate').addEventListener('click', goList);
+
+// ─────────── Stepper ───────────
+let step = 1;
+function setStep(n){
+  step = n;
+  $$('.stepper .step').forEach(s=>{
+    const sn = Number(s.dataset.step);
+    s.classList.toggle('active', sn === n);
+    s.classList.toggle('done', sn < n);
+  });
+  $$('.stepper .line').forEach((l, i)=>{
+    l.classList.toggle('done', i < n - 1);
+  });
+  $$('.form-shell').forEach(sh=>{
+    const bodyStep = sh.querySelector('.step-body');
+    if (!bodyStep) return;
+    const isStep = Number(bodyStep.dataset.body) === n;
+    if (sh.dataset.shell) {
+      sh.style.display = isStep ? 'block' : 'none';
+    } else {
+      sh.style.display = isStep ? 'block' : 'none';
+    }
+  });
+  focusFirstOfStep(n);
+  if (n === 3) refreshSummary();
+}
+
+// step 1 shells
+document.querySelector('[data-body="1"]').closest('.form-shell').dataset.shell = '1';
+
+function focusFirstOfStep(n){
+  const shell = document.querySelector(`[data-shell="${n}"]`);
+  if (!shell) return;
+  const first = shell.querySelector('input:not([type=radio]):not([type=checkbox]), textarea, select');
+  if (first) first.focus({ preventScroll: true });
+}
+
+$('#step1Next').addEventListener('click', ()=> setStep(2));
+$('#step2Back').addEventListener('click', ()=> setStep(1));
+$('#step2Next').addEventListener('click', ()=> setStep(3));
+$('#step3Back').addEventListener('click', ()=> setStep(2));
+
+// ─────────── Radio cards ───────────
+$$('.radio-card').forEach(card => {
+  card.addEventListener('click', ()=>{
+    $$('.radio-card').forEach(c => c.classList.remove('on'));
+    card.classList.add('on');
+    card.querySelector('input').checked = true;
+  });
+});
+
+// ─────────── Priority tiles ───────────
+$$('.prio').forEach(p => {
+  p.addEventListener('click', ()=>{
+    $$('.prio').forEach(x => x.classList.remove('on'));
+    p.classList.add('on');
+    p.querySelector('input').checked = true;
+  });
+});
+
+// ─────────── Checkboxes ───────────
+function bindCheckbox(el){
+  const cb = el.querySelector('input[type=checkbox]');
+  const sync = ()=> el.classList.toggle('on', cb.checked);
+  sync();
+  cb.addEventListener('change', sync);
+  el.addEventListener('click', e => {
+    if (e.target === cb) return;
+    cb.checked = !cb.checked;
+    cb.dispatchEvent(new Event('change', { bubbles:true }));
+    e.preventDefault();
+  });
+}
+['chkNotify','chkFollow','chkTerms'].forEach(id => bindCheckbox($('#'+id)));
+
+// Enable submit only when terms is checked
+const submitBtn = $('#submitBtn');
+const chkTerms = $('#chkTerms').querySelector('input');
+chkTerms.addEventListener('change', ()=>{
+  submitBtn.disabled = !chkTerms.checked;
+});
+
+// ─────────── Summary ───────────
+function refreshSummary(){
+  const first = $('#fFirst').value.trim();
+  const last  = $('#fLast').value.trim();
+  const email = $('#fEmail').value.trim();
+  const subj  = $('#fSubject').value.trim();
+  const cat   = $('#fCategory').value;
+  const prio  = (document.querySelector('input[name=prio]:checked') || {}).value || 'Medium';
+  const asg   = $('#fAssignee').value;
+  const sla   = $('#fSla').value;
+
+  $('#sumCust').textContent    = (first+' '+last).trim() || '—';
+  $('#sumEmail').textContent   = email || '—';
+  $('#sumSubject').textContent = subj  || '—';
+  $('#sumCat').textContent     = cat;
+  $('#sumPrio').textContent    = prio;
+  $('#sumAssign').textContent  = asg;
+  $('#sumSla').textContent     = sla;
+}
+['input','change'].forEach(evt=>{
+  document.addEventListener(evt, e => {
+    if (createView.classList.contains('show') && step === 3) refreshSummary();
+  });
+});
+
+// ─────────── Submit ───────────
+submitBtn.addEventListener('click', ()=>{
+  if (submitBtn.disabled) return;
+  const first = $('#fFirst').value.trim() || 'New';
+  const last  = $('#fLast').value.trim()  || 'Customer';
+  const email = $('#fEmail').value.trim() || 'newcustomer@example.com';
+  const subj  = $('#fSubject').value.trim() || 'New ticket';
+  const prio  = (document.querySelector('input[name=prio]:checked') || {}).value || 'Medium';
+  const asg   = $('#fAssignee').value;
+  const nextIdNum = 1024 + SEED.filter(t => t.id.startsWith('TCK-')).length - 7;
+  const newRow = {
+    id: 'TCK-' + (1025 + SEED.filter(t => t.id.startsWith('NEW-')).length),
+    subject: subj,
+    name: `${first} ${last}`,
+    email,
+    prio,
+    status: 'Open',
+    assignee: asg === 'Auto-assign' ? 'Mia Chen' : asg.replace(' (me)',''),
+    ago: 'just now',
+  };
+  SEED.unshift(newRow);
+  const body = $('#ticketsBody');
+  body.innerHTML = SEED.map((t,i)=>rowHTML(t,i, t === newRow)).join('');
+  $('#cnt-all').textContent = SEED.length;
+  $('#statOpen').textContent = Number($('#statOpen').textContent) + 1;
+
+  toast(`Ticket ${newRow.id} created`, `${newRow.name} · ${newRow.prio}`);
+  goList();
+});
+
+// ─────────── Toast ───────────
+function toast(title, sub){
+  const wrap = $('#toast');
+  const el = document.createElement('div');
+  el.className = 'toast-item';
+  el.innerHTML = `
+    <div class="tick">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg>
+    </div>
+    <div>
+      <div>${title}</div>
+      ${sub ? `<div style="font-weight:400; color:#cbd5e1; font-size:12.5px; margin-top:2px;">${sub}</div>` : ''}
+    </div>`;
+  wrap.appendChild(el);
+  setTimeout(()=> el.classList.add('out'), 3200);
+  setTimeout(()=> el.remove(), 3600);
+}
+
+// ─────────── Reset ───────────
+function resetForm(){
+  setStep(1);
+  ['fFirst','fLast','fEmail','fCompany','fPhone','fSubject','fDesc','fTags'].forEach(id=>{ $('#'+id).value=''; });
+  $('#fCountry').value = 'Select country';
+  $('#fCategory').value = 'Bug';
+  $('#fChannel').value = 'Email';
+  $('#fAssignee').value = 'Auto-assign';
+  $('#fSla').value = 'Standard — 24h first response';
+  $('#fTeam').value = 'Frontline support';
+  $('#fDue').value = '';
+  // priority default Medium
+  $$('.prio').forEach(p=>p.classList.remove('on'));
+  document.querySelector('.prio.medium').classList.add('on');
+  document.querySelector('[data-testid="prio-medium"]').checked = true;
+  // radio cards default new
+  $$('.radio-card').forEach(c=>c.classList.remove('on'));
+  document.querySelector('[data-radio="new"]').classList.add('on');
+  document.querySelector('[data-testid="cust-type-new"]').checked = true;
+  // checkboxes
+  const notify = $('#chkNotify').querySelector('input'); notify.checked = true; $('#chkNotify').classList.add('on');
+  const follow = $('#chkFollow').querySelector('input'); follow.checked = false; $('#chkFollow').classList.remove('on');
+  const terms = $('#chkTerms').querySelector('input'); terms.checked = false; $('#chkTerms').classList.remove('on');
+  submitBtn.disabled = true;
+}
+resetForm();
+goList();
+</script>
+
+<!-- ─────────── CRAWLY EMBEDDED DEMO ─────────── -->
+<script>
+(function () {
+  'use strict';
+  const canvas = document.getElementById('crawly-canvas');
+  const ctx = canvas.getContext('2d');
+  const hud = document.getElementById('crawly-hud');
+  const startBtn = document.getElementById('crawly-start');
+  const runningPill = document.getElementById('crawly-running');
+  const stopBtn = document.getElementById('crawly-stop');
+
+  // ───────── Audio ─────────
+  // Sound effects live in ../audio/. Volumes are tuned so a voiceover can sit
+  // comfortably on top.
+  const AUDIO_BASE = '../audio/';
+  const SFX = {
+    walk:  { src: 'walking.mp3',           vol: 0.28, loop: true  },
+    type:  { src: 'typing.mp3',            vol: 0.42, loop: true  },
+    click: { src: 'button-click.mp3',      vol: 0.60, loop: false },
+    thwip: { src: 'web-shooting.mp3',      vol: 0.55, loop: false },
+    zip:   { src: 'web-shooting-long.mp3', vol: 0.55, loop: false },
+  };
+  const audio = {};
+  function loadAudio() {
+    for (const key of Object.keys(SFX)) {
+      const cfg = SFX[key];
+      const a = new Audio(AUDIO_BASE + cfg.src);
+      a.preload = 'auto';
+      a.loop = cfg.loop;
+      a.volume = cfg.vol;
+      audio[key] = a;
+    }
+  }
+  function playOnce(name) {
+    const master = audio[name];
+    if (!master) return;
+    const a = master.cloneNode();
+    a.volume = master.volume;
+    const p = a.play();
+    if (p && p.catch) p.catch(() => {});
+  }
+  function playLoop(name) {
+    const a = audio[name];
+    if (!a) return;
+    if (!a.paused) return;
+    a.currentTime = 0;
+    const p = a.play();
+    if (p && p.catch) p.catch(() => {});
+  }
+  function stopLoop(name) {
+    const a = audio[name];
+    if (!a) return;
+    a.pause();
+    a.currentTime = 0;
+  }
+  function stopAllAudio() {
+    for (const key of Object.keys(audio)) stopLoop(key);
+  }
+
+  const TAU = Math.PI * 2;
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const easeS = (t) => t * t * (3 - 2 * t);
+  const easeOut3 = (t) => 1 - Math.pow(1 - t, 3);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  function angLerp(a, b, t) {
+    let d = (b - a) % TAU;
+    if (d > Math.PI) d -= TAU;
+    if (d < -Math.PI) d += TAU;
+    return a + d * t;
+  }
+
+  const P = {
+    body: '#141414', legs: '#141414', fang: '#141414',
+    eye: '#ffffff', pupil: '#141414', eyeRing: null, silkA: 0.28
+  };
+
+  let W = innerWidth, H = innerHeight, DPR = 1;
+  function resize() {
+    W = innerWidth; H = innerHeight;
+    DPR = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  addEventListener('resize', resize);
+  resize();
+
+  function pow(word, x, y, big) {
+    const p = document.createElement('div');
+    p.className = 'fx-pow ' + (big ? 'big' : 'small');
+    p.textContent = word;
+    p.style.left = clamp(x, 70, W - 70) + 'px';
+    p.style.top = clamp(y, 46, H - 46) + 'px';
+    p.style.transform += ` rotate(${(Math.random() * 16 - 9).toFixed(1)}deg)`;
+    document.body.appendChild(p);
+    setTimeout(() => p.classList.add('out'), big ? 1000 : 650);
+    setTimeout(() => p.remove(), big ? 1400 : 1000);
+  }
+  let bubbleEl = null, bubbleTimer = 0;
+  function bubble(sp, text, ms) {
+    if (bubbleEl) bubbleEl.remove();
+    clearTimeout(bubbleTimer);
+    const b = document.createElement('div');
+    b.className = 'fx-bubble';
+    b.textContent = text;
+    b.style.left = clamp(sp.x - 30, 10, W - 275) + 'px';
+    b.style.top = clamp(sp.y - 108, 8, H - 140) + 'px';
+    document.body.appendChild(b);
+    bubbleEl = b;
+    bubbleTimer = setTimeout(() => {
+      b.classList.add('out');
+      setTimeout(() => { if (bubbleEl === b) bubbleEl = null; b.remove(); }, 300);
+    }, ms || 1600);
+  }
+
+  const LEG_DEF = [
+    { a: -0.6, r: 36 }, { a: -1.15, r: 38 }, { a: -1.95, r: 38 }, { a: -2.55, r: 34 },
+    { a: 0.6, r: 36 }, { a: 1.15, r: 38 }, { a: 1.95, r: 38 }, { a: 2.55, r: 34 },
+  ];
+  const CROUCH_T = 0.06, SHOOT_T = 0.1, HOLD_T = 0.1;
+  const AIM_T = CROUCH_T + SHOOT_T + HOLD_T;
+  const ZIP_T = 0.1, HOP_T = 0.3, ZIP_DIST = 300, MAXV = 115;
+
+  class Spider {
+    constructor(x, y, k) {
+      this.k = k || 1;
+      this.R = 11 * this.k;
+      this.x = x; this.y = y;
+      this.vx = 0; this.vy = 0;
+      this.heading = -Math.PI / 2;
+      this.speed = 0;
+      this.mode = 'walk'; this.modeT = 0; this.cool = 0;
+      this.web = { ax: 0, ay: 0, lineA: 0, splatA: 0 };
+      this.zipFrom = { x: 0, y: 0 }; this.land = { x: 0, y: 0 };
+      this.goal = null; this.dropState = null; this.hopState = null;
+      this.airLift = 0; this.landT = 0;
+      this.blinkT = Math.random() * 2; this.nextBlink = 2 + Math.random() * 3;
+      this.typing = false; this.visible = false; this.faceAt = null;
+      this.legs = LEG_DEF.map((d, i) => ({
+        ang: d.a, rest: d.r * this.k,
+        bend: (i < 4 ? -1 : 1) * (Math.abs(d.a) < 1.5 ? 1 : -1),
+        fx: 0, fy: 0, stepping: false, st: 0, sx: 0, sy: 0, tx: 0, ty: 0,
+      }));
+      this.plantFeet(6);
+    }
+    homeFoot(leg, lead) {
+      const a = this.heading + leg.ang;
+      return {
+        x: this.x + Math.cos(a) * leg.rest + this.vx * lead,
+        y: this.y + Math.sin(a) * leg.rest + this.vy * lead,
+      };
+    }
+    plantFeet(j) {
+      for (const leg of this.legs) {
+        const h = this.homeFoot(leg, 0);
+        leg.stepping = false;
+        leg.fx = h.x + (Math.random() - 0.5) * j;
+        leg.fy = h.y + (Math.random() - 0.5) * j;
+      }
+    }
+    target() {
+      if (this.goal) return this.goal;
+      return this;
+    }
+    goTo(x, y) {
+      return new Promise((res) => {
+        this.goal = { x: clamp(x, 24, W - 24), y: clamp(y, 24, H - 24), resolve: res, age: 0 };
+      });
+    }
+    hop(x, y) {
+      return new Promise((res) => {
+        this.mode = 'hop'; this.modeT = 0;
+        this.hopState = { fx: this.x, fy: this.y, tx: clamp(x, 24, W - 24), ty: clamp(y, 24, H - 24), resolve: res };
+        const d = Math.hypot(x - this.x, y - this.y);
+        if (d > 2) this.heading = Math.atan2(y - this.y, x - this.x);
+        for (const leg of this.legs) leg.stepping = false;
+      });
+    }
+    dropIn(x, toY) {
+      this.visible = true;
+      this.x = clamp(x, 40, W - 40); this.y = -60;
+      this.vx = 0; this.vy = 0; this.heading = Math.PI / 2;
+      this.mode = 'drop'; this.modeT = 0;
+      pow('THWIP!', this.x, Math.max(70, toY - 120), false);
+      playOnce('thwip');
+      return new Promise((res) => { this.dropState = { fromY: -60, toY, resolve: res }; });
+    }
+    update(dt) {
+      if (this.mode === 'drop' || this.mode === 'ascend') {
+        this.modeT += dt;
+        const up = this.mode === 'ascend';
+        const t = Math.min(this.modeT / (up ? 0.5 : 0.6), 1);
+        const kk = up ? t * t : easeOut3(t);
+        this.y = lerp(this.dropState.fromY, this.dropState.toY, kk);
+        this.heading = angLerp(this.heading, Math.PI / 2, 1 - Math.pow(0.001, dt));
+        for (const leg of this.legs) {
+          const a = this.heading + leg.ang;
+          leg.fx = this.x + Math.cos(a) * leg.rest * 0.5;
+          leg.fy = this.y + Math.sin(a) * leg.rest * 0.5 - 4;
+          leg.stepping = false;
+        }
+        if (t >= 1) {
+          const done = this.dropState; this.dropState = null;
+          this.mode = 'walk'; this.vx = 0; this.vy = 20;
+          if (!up) this.plantFeet(9);
+          done.resolve && done.resolve();
+        }
+        this.blink(dt); return;
+      }
+      const tgt = this.target();
+      const dx = tgt.x - this.x, dy = tgt.y - this.y;
+      const d = Math.hypot(dx, dy);
+      const stopR = 30;
+
+      if (this.mode === 'walk') {
+        this.cool = Math.max(0, this.cool - dt);
+        if (tgt !== this && this.cool <= 0 && d > ZIP_DIST) {
+          this.mode = 'aim'; this.modeT = 0;
+          this.web.ax = tgt.x; this.web.ay = tgt.y;
+          this.web.lineA = 0; this.web.splatA = 0;
+        }
+      }
+      if (this.mode === 'aim') {
+        this.modeT += dt;
+        this.vx *= Math.pow(0.001, dt); this.vy *= Math.pow(0.001, dt);
+        this.x += this.vx * dt; this.y += this.vy * dt;
+        this.heading = angLerp(this.heading, Math.atan2(this.web.ay - this.y, this.web.ax - this.x), 1 - Math.pow(1e-7, dt));
+        if (this.modeT > CROUCH_T) this.web.lineA = 1;
+        if (this.modeT > CROUCH_T + SHOOT_T && !this.web.splatA) {
+          this.web.splatA = 1;
+          pow('THWIP!', this.web.ax, this.web.ay - 24, false);
+          playOnce('zip');
+        }
+        if (this.modeT >= AIM_T) {
+          this.mode = 'zip'; this.modeT = 0;
+          this.zipFrom.x = this.x; this.zipFrom.y = this.y;
+          const zd = Math.hypot(this.web.ax - this.x, this.web.ay - this.y) || 1;
+          const zux = (this.web.ax - this.x) / zd, zuy = (this.web.ay - this.y) / zd;
+          this.land.x = clamp(this.web.ax - zux * 26, 24, W - 24);
+          this.land.y = clamp(this.web.ay - zuy * 26, 24, H - 24);
+          this.heading = Math.atan2(zuy, zux);
+          for (const leg of this.legs) leg.stepping = false;
+        }
+      } else if (this.mode === 'zip') {
+        this.modeT += dt;
+        const tt = Math.min(this.modeT / ZIP_T, 1);
+        const e = easeOut3(tt);
+        const nx = lerp(this.zipFrom.x, this.land.x, e), ny = lerp(this.zipFrom.y, this.land.y, e);
+        this.vx = (nx - this.x) / Math.max(dt, 0.001);
+        this.vy = (ny - this.y) / Math.max(dt, 0.001);
+        this.x = nx; this.y = ny;
+        for (const leg of this.legs) {
+          const a = this.heading + leg.ang;
+          leg.fx = this.x + Math.cos(a) * leg.rest * 0.45 - Math.cos(this.heading) * 7;
+          leg.fy = this.y + Math.sin(a) * leg.rest * 0.45 - Math.sin(this.heading) * 7;
+        }
+        if (tt >= 1) {
+          this.mode = 'walk'; this.cool = 0.35;
+          const sp = Math.hypot(this.vx, this.vy) || 1;
+          this.vx = (this.vx / sp) * 25; this.vy = (this.vy / sp) * 25;
+          this.plantFeet(9);
+        }
+      } else if (this.mode === 'hop') {
+        this.modeT += dt;
+        const tt = Math.min(this.modeT / HOP_T, 1);
+        const e = easeS(tt);
+        const hs = this.hopState;
+        const nx = lerp(hs.fx, hs.tx, e), ny = lerp(hs.fy, hs.ty, e);
+        this.vx = (nx - this.x) / Math.max(dt, 0.001);
+        this.vy = (ny - this.y) / Math.max(dt, 0.001);
+        this.x = nx; this.y = ny;
+        this.airLift = Math.sin(Math.PI * tt);
+        for (const leg of this.legs) {
+          const a = this.heading + leg.ang;
+          leg.fx = this.x + Math.cos(a) * leg.rest * 0.5;
+          leg.fy = this.y + Math.sin(a) * leg.rest * 0.5;
+          leg.stepping = false;
+        }
+        if (tt >= 1) {
+          this.mode = 'walk';
+          this.airLift = 0; this.landT = 0.12;
+          this.cool = Math.max(this.cool, 0.2);
+          this.vx = 0; this.vy = 0;
+          this.plantFeet(8);
+          const done = this.hopState; this.hopState = null;
+          done.resolve && done.resolve();
+        }
+      } else {
+        let want = 0;
+        if (d > stopR) want = Math.min(MAXV, (d - stopR) * 2.2);
+        const ux = d > 0.001 ? dx / d : 0, uy = d > 0.001 ? dy / d : 0;
+        const kk = 1 - Math.pow(0.002, dt);
+        this.vx = lerp(this.vx, ux * want, kk);
+        this.vy = lerp(this.vy, uy * want, kk);
+        this.x = clamp(this.x + this.vx * dt, 24, W - 24);
+        this.y = clamp(this.y + this.vy * dt, 24, H - 24);
+        const sp = Math.hypot(this.vx, this.vy);
+        if (sp > 8) this.heading = angLerp(this.heading, Math.atan2(this.vy, this.vx), 1 - Math.pow(0.001, dt));
+        else if (d > stopR + 6) this.heading = angLerp(this.heading, Math.atan2(dy, dx), 1 - Math.pow(0.02, dt));
+        else if (this.faceAt) this.heading = angLerp(this.heading, Math.atan2(this.faceAt.y - this.y, this.faceAt.x - this.x), 1 - Math.pow(0.004, dt));
+        this.web.lineA = Math.max(0, this.web.lineA - dt * 7);
+        this.web.splatA = Math.max(0, this.web.splatA - dt * 1.8);
+      }
+      this.speed = Math.hypot(this.vx, this.vy);
+      this.landT = Math.max(0, this.landT - dt);
+
+      if (this.goal) {
+        this.goal.age += dt;
+        if ((this.mode === 'walk' && d < stopR + 5 && this.speed < 16) || this.goal.age > 6) {
+          const g = this.goal; this.goal = null;
+          g.resolve();
+        }
+      }
+
+      if (this.mode !== 'zip' && this.mode !== 'hop') {
+        const speedT = Math.min(this.speed / MAXV, 1);
+        const stepDur = lerp(0.22, 0.11, speedT);
+        const trig = (this.speed < 15 ? 6 : 13 * (1 - 0.25 * speedT)) * this.k;
+        for (let i = 0; i < this.legs.length; i++) {
+          const leg = this.legs[i];
+          if (leg.stepping) {
+            leg.st += dt / stepDur;
+            if (leg.st >= 1) { leg.stepping = false; leg.fx = leg.tx; leg.fy = leg.ty; }
+            continue;
+          }
+          const home = this.homeFoot(leg, 0.13);
+          const off = Math.hypot(home.x - leg.fx, home.y - leg.fy);
+          if (off > trig) {
+            const base = i < 4 ? 0 : 4, jj = i - base;
+            const blockers = [];
+            if (jj > 0) blockers.push(base + jj - 1);
+            if (jj < 3) blockers.push(base + jj + 1);
+            blockers.push(i < 4 ? i + 4 : i - 4);
+            const blocked = blockers.some((b) => this.legs[b].stepping);
+            if (!blocked || off > trig * 1.8) {
+              leg.stepping = true; leg.st = 0;
+              leg.sx = leg.fx; leg.sy = leg.fy;
+              const oa = Math.atan2(home.y - leg.fy, home.x - leg.fx);
+              const over = Math.min(off * 0.35, 8 * this.k);
+              leg.tx = home.x + Math.cos(oa) * over;
+              leg.ty = home.y + Math.sin(oa) * over;
+            }
+          }
+        }
+      }
+      this.blink(dt);
+    }
+    blink(dt) {
+      this.blinkT += dt;
+      if (this.blinkT > this.nextBlink) { this.blinkT = 0; this.nextBlink = 2 + Math.random() * 3.5; }
+    }
+    footPos(leg) {
+      if (!leg.stepping) return { x: leg.fx, y: leg.fy, lift: 0 };
+      const e = easeS(leg.st);
+      return { x: lerp(leg.sx, leg.tx, e), y: lerp(leg.sy, leg.ty, e), lift: Math.sin(leg.st * Math.PI) };
+    }
+    drawLeg(hipx, hipy, fx, fy, bodyX, bodyY, bend, lift) {
+      const dx = fx - hipx, dy = fy - hipy;
+      const d = Math.hypot(dx, dy) || 0.001;
+      const maxD = 41 * this.k;
+      let ex = fx, ey = fy;
+      if (d > maxD) { ex = hipx + (dx / d) * maxD; ey = hipy + (dy / d) * maxD; }
+      ey -= lift * 3;
+      const cdx = ex - hipx, cdy = ey - hipy;
+      const cd = Math.hypot(cdx, cdy) || 0.001;
+      const mx = (hipx + ex) / 2, my = (hipy + ey) / 2;
+      const ox = mx - bodyX, oy = my - bodyY;
+      const od = Math.hypot(ox, oy) || 0.001;
+      const arch = 8 * this.k * (1 + lift * 0.9);
+      const cx = mx + (-cdy / cd) * arch * bend + (ox / od) * 2.5;
+      const cy = my + (cdx / cd) * arch * bend + (oy / od) * 2.5;
+      ctx.beginPath();
+      ctx.moveTo(hipx, hipy);
+      ctx.quadraticCurveTo(cx, cy, ex, ey);
+      ctx.stroke();
+    }
+    drawWeb(headX, headY) {
+      let lineA = 0, tipP = 1;
+      if (this.mode === 'aim') {
+        if (this.modeT > CROUCH_T) { lineA = 1; tipP = Math.min((this.modeT - CROUCH_T) / SHOOT_T, 1); }
+      } else if (this.mode === 'zip') lineA = 1;
+      else if (this.mode === 'drop') {
+        ctx.strokeStyle = `rgba(17,17,17,${P.silkA})`;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(this.x, 0); ctx.lineTo(this.x, this.y - 6);
+        ctx.stroke();
+        return;
+      } else if (this.web.lineA > 0) lineA = this.web.lineA;
+      if (lineA > 0) {
+        const e = easeOut3(tipP);
+        const tx = lerp(headX, this.web.ax, e), ty = lerp(headY, this.web.ay, e);
+        ctx.strokeStyle = `rgba(17,17,17,${(P.silkA * lineA).toFixed(3)})`;
+        ctx.lineWidth = 1.1;
+        ctx.beginPath(); ctx.moveTo(headX, headY); ctx.lineTo(tx, ty); ctx.stroke();
+      }
+      if (this.web.splatA > 0) {
+        const a = this.web.splatA;
+        ctx.strokeStyle = `rgba(17,17,17,${(0.34 * a).toFixed(3)})`;
+        ctx.lineWidth = 1;
+        for (let i = 0; i < 6; i++) {
+          const an = (i / 6) * TAU + 0.26;
+          ctx.beginPath();
+          ctx.moveTo(this.web.ax + Math.cos(an) * 1.5, this.web.ay + Math.sin(an) * 1.5);
+          ctx.lineTo(this.web.ax + Math.cos(an) * 6, this.web.ay + Math.sin(an) * 6);
+          ctx.stroke();
+        }
+      }
+    }
+    draw(t) {
+      if (!this.visible) return;
+      const R = this.R, k = this.k;
+      const hx = Math.cos(this.heading), hy = Math.sin(this.heading);
+      const px = -hy, py = hx;
+      const zipping = this.mode === 'zip';
+      const hopping = this.mode === 'hop';
+      const dropping = this.mode === 'drop';
+      const crouch = this.mode === 'aim' && this.modeT < CROUCH_T;
+      const speedT = Math.min(this.speed / MAXV, 1);
+      const holding = this.mode === 'aim' && this.modeT > CROUCH_T + SHOOT_T;
+      let wob = zipping || hopping || dropping ? 0 : Math.sin(t * 15) * speedT * 1.1;
+      if (holding) wob = Math.sin(t * 48) * 1.3;
+      if (this.typing) wob = Math.sin(t * 28) * 0.5;
+      const breathe = Math.sin(t * 2.1 + this.x * 0.01) * 0.5 * (1 - speedT);
+      const bx = this.x + px * wob;
+      const by = this.y + py * wob;
+      let squish = crouch ? 0.92 : 1;
+      if (this.landT > 0) squish = 0.86 + 0.14 * (1 - this.landT / 0.12);
+      const headR = R * squish;
+      const hcx = bx + hx * R * (0.7 + (zipping ? 0.18 : 0));
+      const hcy = by + hy * R * (0.7 + (zipping ? 0.18 : 0));
+
+      if (!dropping) {
+        const shScale = (1 - this.airLift * 0.4) * k;
+        ctx.save();
+        ctx.translate(this.x, this.y + 6);
+        ctx.rotate(this.heading);
+        ctx.fillStyle = `rgba(17,17,17,${(zipping ? 0.03 : 0.05) * (1 - this.airLift * 0.5)})`;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 24 * shScale, 16 * shScale, 0, 0, TAU);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      this.drawWeb(hcx + hx * headR * 0.85, hcy + hy * headR * 0.85);
+
+      ctx.save();
+      ctx.translate(0, -this.airLift * 26);
+      ctx.strokeStyle = P.legs;
+      ctx.lineWidth = 2.1 * k;
+      ctx.lineCap = 'round';
+      for (const leg of this.legs) {
+        let f = this.footPos(leg);
+        let lift = zipping || hopping ? 1 : (f.lift || 0);
+        if (this.typing && Math.abs(leg.ang) < 0.7) {
+          const fa = this.heading + leg.ang * 0.5;
+          const tap = Math.max(0, Math.sin(t * 14 + (leg.ang < 0 ? 0 : Math.PI)));
+          f = { x: bx + Math.cos(fa) * leg.rest * 0.8, y: by + Math.sin(fa) * leg.rest * 0.8 };
+          lift = tap * 0.9;
+        }
+        const ha = this.heading + leg.ang;
+        const hipx = bx + Math.cos(ha) * R * 0.75;
+        const hipy = by + Math.sin(ha) * R * 0.75;
+        this.drawLeg(hipx, hipy, f.x, f.y, bx, by, leg.bend, lift);
+      }
+
+      ctx.fillStyle = P.body;
+      const abR = (R * 1.45 + breathe) * squish;
+      const stretch = zipping ? 1.18 : 1;
+      ctx.beginPath();
+      ctx.ellipse(bx - hx * R * 1.25, by - hy * R * 1.25, abR * 1.06 * stretch, abR, this.heading, 0, TAU);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(hcx, hcy, headR, 0, TAU);
+      ctx.fill();
+
+      ctx.fillStyle = P.fang;
+      for (const s of [-1, 1]) {
+        const fx = hcx + hx * headR * 1.18 + px * headR * 0.32 * s;
+        const fy = hcy + hy * headR * 1.18 + py * headR * 0.32 * s;
+        ctx.beginPath(); ctx.arc(fx, fy, 1.7 * k, 0, TAU); ctx.fill();
+      }
+
+      let open = 1;
+      if (this.blinkT < 0.13) {
+        const q = this.blinkT / 0.13;
+        open = q < 0.5 ? 1 - q * 2 : (q - 0.5) * 2;
+        open = Math.max(open, 0.08);
+      }
+      const look = this.faceAt || this.target();
+      for (const s of [-1, 1]) {
+        const ex = hcx + hx * headR * 0.42 + px * headR * 0.46 * s;
+        const ey = hcy + hy * headR * 0.42 + py * headR * 0.46 * s;
+        ctx.fillStyle = P.eye;
+        ctx.beginPath();
+        ctx.ellipse(ex, ey, 4 * k, 4 * k * open, this.heading, 0, TAU);
+        ctx.fill();
+        if (open > 0.35) {
+          let ldx = look.x - ex, ldy = look.y - ey;
+          const ld = Math.hypot(ldx, ldy) || 1;
+          ldx /= ld; ldy /= ld;
+          ctx.fillStyle = P.pupil;
+          ctx.beginPath();
+          ctx.ellipse(ex + ldx * 1.4, ey + ldy * 1.4, 2 * k, 2 * k * open, 0, 0, TAU);
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+    }
+  }
+
+  // ───────── Animation frame ─────────
+  const spiders = [];
+  let last = performance.now();
+  let running = true;
+  let walking = false;
+  function updateWalkAudio(sp) {
+    const wantWalk = sp && sp.visible && sp.mode === 'walk' && sp.speed > 14 && !sp.typing;
+    if (wantWalk && !walking) { playLoop('walk'); walking = true; }
+    else if (!wantWalk && walking) { stopLoop('walk'); walking = false; }
+  }
+  function frame(now) {
+    if (!running) return;
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    ctx.clearRect(0, 0, W, H);
+    for (const s of spiders) { s.update(dt); s.draw(now / 1000); }
+    updateWalkAudio(spiders[0]);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // ───────── Element helpers ─────────
+  function rectOf(el) { return el.getBoundingClientRect(); }
+  function approachPoint(r, fromX) {
+    const cy = r.top + r.height / 2;
+    const cx = r.left + r.width / 2;
+    const leftRoom = r.left > 110, rightRoom = W - r.right > 110;
+    let x;
+    if (leftRoom && rightRoom) x = fromX <= cx ? r.left - 44 : r.right + 44;
+    else if (leftRoom) x = r.left - 44;
+    else if (rightRoom) x = r.right + 44;
+    else x = cx;
+    return { x: clamp(x, 26, W - 26), y: clamp(cy, 26, H - 26) };
+  }
+  function perchPoint(r) {
+    return { x: clamp(r.left + 4, 26, W - 26), y: clamp(r.top - 24, 26, H - 26) };
+  }
+  async function pounceOn(sp, el) {
+    const r = rectOf(el);
+    const ap = approachPoint(r, sp.x);
+    await sp.goTo(ap.x, ap.y);
+    const r2 = rectOf(el);
+    sp.faceAt = { x: r2.left + r2.width / 2, y: r2.top + r2.height / 2 };
+    await sleep(160);
+    await sp.hop(r2.left + r2.width / 2, r2.top + r2.height / 2);
+    el.click();
+    playOnce('click');
+    sp.faceAt = null;
+    pow('BANG!', r2.left + r2.width / 2, r2.top - 8, false);
+    await sleep(260);
+    const r3 = rectOf(el);
+    const ap2 = approachPoint(r3, sp.x);
+    await sp.hop(ap2.x, ap2.y);
+    await sleep(120);
+  }
+  async function typeIn(sp, el, value) {
+    const r = rectOf(el);
+    const perch = perchPoint(r);
+    await sp.goTo(perch.x, perch.y);
+    sp.faceAt = { x: r.left + Math.min(70, r.width * 0.4), y: r.top + r.height / 2 };
+    await sleep(140);
+    el.focus({ preventScroll: true });
+    sp.typing = true;
+    playLoop('type');
+    el.value = '';
+    for (const ch of value) {
+      el.value += ch;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      await sleep(35);
+    }
+    sp.typing = false;
+    stopLoop('type');
+    sp.faceAt = null;
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+    el.blur();
+    await sleep(140);
+  }
+  async function chooseFrom(sp, sel, value) {
+    const r = rectOf(sel);
+    const perch = perchPoint(r);
+    await sp.goTo(perch.x, perch.y);
+    sp.faceAt = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    await sleep(280);
+    sel.value = value;
+    sel.dispatchEvent(new Event('change', { bubbles: true }));
+    playOnce('click');
+    pow('BANG!', r.left + r.width - 20, r.top - 6, false);
+    await sleep(220);
+    sp.faceAt = null;
+  }
+
+  // ───────── The scripted flow ─────────
+  const SCENES = [
+    {
+      first: 'Zara', last: 'Ahmed',
+      email: 'zara@brightloop.co',
+      company: 'BrightLoop', phone: '+1 555 010 2234',
+      country: 'United Kingdom',
+      subject: 'Login redirect loop after 2FA', category: 'Bug',
+      prio: 'high',
+      desc: 'Turn on 2FA, then log in. The page bounces between /login and /verify forever.',
+      tags: 'auth, 2fa, redirect',
+      assignee: 'Sam Yoo', sla: 'Priority — 4h first response'
+    },
+    {
+      first: 'Luca', last: 'Moretti',
+      email: 'luca@tavo.media',
+      company: 'Tavo Media', phone: '+39 320 041 8809',
+      country: 'Germany',
+      subject: 'Bulk export truncates past 5MB', category: 'Bug',
+      prio: 'medium',
+      desc: 'Export of the full customer directory silently stops around 5MB. Log shows no error.',
+      tags: 'export, bulk, size-limit',
+      assignee: 'Mia Chen', sla: 'Standard — 24h first response'
+    },
+  ];
+
+  async function ticketFlow(sp) {
+    await sleep(600);
+    const btn = document.getElementById('newTicketBtn');
+    const bRect = rectOf(btn);
+    await sp.dropIn(bRect.left + bRect.width * 0.5 - 60, bRect.top + bRect.height + 80);
+    pow('KPOW!', sp.x, sp.y - 60, true);
+    bubble(sp, 'Watch me file a ticket.', 2000);
+    await sleep(1600);
+
+    let cycle = 0;
+    while (running) {
+      const scene = SCENES[cycle % SCENES.length];
+
+      // Ensure list view is showing (goList is exposed from the earlier script).
+      if (!document.getElementById('listView').classList.contains('hide') === false) {
+        try { goList(); } catch (e) {}
+        await sleep(300);
+      }
+
+      // 1) New Ticket
+      await pounceOn(sp, document.getElementById('newTicketBtn'));
+      await sleep(300);
+
+      // 2) Step 1 - Customer info
+      bubble(sp, 'Step 1 — customer.', 1400);
+      await typeIn(sp, document.getElementById('fFirst'), scene.first);
+      await typeIn(sp, document.getElementById('fLast'), scene.last);
+      await typeIn(sp, document.getElementById('fEmail'), scene.email);
+      await typeIn(sp, document.getElementById('fCompany'), scene.company);
+      await typeIn(sp, document.getElementById('fPhone'), scene.phone);
+      await chooseFrom(sp, document.getElementById('fCountry'), scene.country);
+      await pounceOn(sp, document.getElementById('step1Next'));
+      await sleep(300);
+
+      // 3) Step 2 - Details
+      bubble(sp, 'Step 2 — details.', 1400);
+      await typeIn(sp, document.getElementById('fSubject'), scene.subject);
+      await chooseFrom(sp, document.getElementById('fCategory'), scene.category);
+      const prioLabel = document.querySelector(`[data-testid="prio-${scene.prio}"]`).closest('label');
+      await pounceOn(sp, prioLabel);
+      await sleep(150);
+      await typeIn(sp, document.getElementById('fDesc'), scene.desc);
+      await typeIn(sp, document.getElementById('fTags'), scene.tags);
+      await pounceOn(sp, document.getElementById('step2Next'));
+      await sleep(300);
+
+      // 4) Step 3 - Assign & review
+      bubble(sp, 'Step 3 — assign.', 1400);
+      await chooseFrom(sp, document.getElementById('fAssignee'), scene.assignee);
+      await chooseFrom(sp, document.getElementById('fSla'), scene.sla);
+      await pounceOn(sp, document.getElementById('chkTerms'));
+      await sleep(360);
+
+      // 5) Submit
+      bubble(sp, 'And… submit!', 1400);
+      await pounceOn(sp, document.getElementById('submitBtn'));
+      await sleep(1000);
+
+      // 6) Celebrate the fresh row
+      const newRow = document.querySelector('#ticketsBody tr:first-child');
+      if (newRow) {
+        const rr = rectOf(newRow);
+        pow('KPOW!', rr.left + rr.width * 0.5, rr.top + 12, true);
+        await sp.hop(clamp(rr.left + 60, 40, W - 40), clamp(rr.top - 22, 40, H - 40));
+      }
+      bubble(sp, 'Ticket up. Doing another.', 2200);
+      await sleep(2400);
+
+      cycle++;
+    }
+  }
+
+  // ───────── Bootstrap ─────────
+  const spider = new Spider(W * 0.5, -80, 1);
+  spiders.push(spider);
+
+  function stopDemo() {
+    running = false;
+    stopAllAudio();
+    if (hud) hud.style.display = 'none';
+    document.querySelectorAll('.fx-pow, .fx-bubble').forEach(n => n.remove());
+    if (canvas) { const c = canvas.getContext('2d'); c && c.clearRect(0, 0, W * DPR, H * DPR); }
+  }
+  stopBtn && stopBtn.addEventListener('click', stopDemo);
+
+  let started = false;
+  function startDemo() {
+    if (started) return;
+    started = true;
+    loadAudio();
+    if (startBtn) startBtn.classList.remove('on');
+    if (runningPill) runningPill.classList.add('on');
+    ticketFlow(spider);
+  }
+  startBtn && startBtn.addEventListener('click', startDemo);
+})();
+</script>
+</body>
+</html>

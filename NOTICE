@@ -1,0 +1,15 @@
+Crawly
+Copyright 2025 yemon and Crawly contributors
+
+This product includes software developed by the Crawly authors
+(https://github.com/yemon/crawly).
+
+Licensed under the Apache License, Version 2.0. See the LICENSE file
+for the full terms.
+
+Third-party assets bundled with the extension:
+
+  - Bangers (extension/fonts/bangers.woff2)
+    Copyright the Bangers Project Authors (https://github.com/googlefonts/bangers)
+    Licensed under the SIL Open Font License, Version 1.1.
+    See https://openfontlicense.org/ for the full text.

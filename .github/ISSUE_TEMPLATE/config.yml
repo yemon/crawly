@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/yemon/crawly/security/advisories/new
+    about: Please report security issues privately, not in a public issue. See SECURITY.md for scope.
+  - name: Website
+    url: https://crawly.site
+    about: Learn more about Crawly and see it in action.
